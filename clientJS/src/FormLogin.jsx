@@ -5,7 +5,6 @@ function FormLogin({ onLogin }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(input);
     onLogin(input);
   }
 

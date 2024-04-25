@@ -1,30 +1,18 @@
-import { fetchLogin } from "./services";
-
+import { useReducer } from "react";
 import reducer, { intialState } from "./reducer";
+
+import { onLogin } from "./utils";
 
 import FormLogin from "./FormLogin";
 
 import "./App.css";
-import { useReducer } from "react";
-import { ACTIONS } from "./constants";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, intialState);
 
-  // Make this function work first, then learn context api
-  function onLogin(username) {
-    fetchLogin(username)
-      .then((data) => {
-        dispatch({ type: ACTIONS.LOG_IN, username: data.username });
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
   return (
     <div>
+
       <button
         className=""
         type="button"
@@ -34,7 +22,8 @@ function App() {
       >
         test
       </button>
-      <FormLogin onLogin={onLogin} />
+      
+      <FormLogin onLogin={onLogin(dispatch)} />
     </div>
   );
 }

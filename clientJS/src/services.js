@@ -9,10 +9,10 @@ function chainPromise(promise) {
     });
 }
 
-// export function fetchSession() {
-//   const fetched = fetch("/api/v1/session");
-//   return chainPromise(fetched);
-// }
+export function fetchSession() {
+  const fetched = fetch("/api/v1/session");
+  return chainPromise(fetched);
+}
 
 export function fetchLogin(username) {
   const fetched = fetch("/api/v1/session", {

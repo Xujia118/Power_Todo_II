@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/User");
+const User = require("../schemas/User");
 
 // Import files
-const sessions = require("../sessions");
-const users = require("../users");
+const sessions = require("../models/sessions");
+const users = require("../models/users");
 
 // Get valid session
 function authenticate(req, res) {

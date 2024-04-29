@@ -1,8 +1,6 @@
 const uuid = require("uuid").v4;
 
 // We don't need to store sessions, because sid will be destroyed at logout
-// But we do need to store users. So at every login, we need to check
-// if the user exists or not. Retrieve data if the user exists, or create a new one
 
 const sessions = {};
 

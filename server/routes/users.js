@@ -33,11 +33,10 @@ router.post("/", async (req, res) => {
 
   try {
     // Prevent duplicate users
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
+    const userExists = users.userExists(username);
+    if (userExists) {
       res.cookie("sid", sid);
-      res.status(200).json({ existingUser });
-      return;
+      return res.status(200).json({ username });
     }
 
     // Create new user

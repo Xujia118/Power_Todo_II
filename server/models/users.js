@@ -1,4 +1,14 @@
+const User = require("../schemas/User");
+
 const users = {};
+
+// We need to store users. So at every login, we need to check
+// if the user exists or not. Retrieve data if the user exists, or create a new one
+
+async function userExists(username) {
+  const existingUser = await User.findOne({ username });
+  return existingUser;
+}
 
 function isValid(username) {
   let isValid = true;
@@ -7,9 +17,7 @@ function isValid(username) {
   return isValid;
 }
 
-
-// function addNewTask
-
 module.exports = {
   isValid,
-}
+  userExists,
+};

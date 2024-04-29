@@ -1,23 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../schemas/User");
 
 // Import files
+const User = require("../schemas/User");
 const sessions = require("../models/sessions");
 const users = require("../models/users");
-
-// Get valid session
-function authenticate(req, res) {
-  const sid = req.cookies.sid;
-  const username = sid ? sessions.getSessionUser(sid) : "";
-
-  if (!sid || !users.isValid(username)) {
-    res.status(401).json({ error: "auth-missing" });
-    return "";
-  }
-
-  return username;
-}
+const authenticate = require('./auth');
 
 router.get("/", (req, res) => {
   const username = authenticate(req, res);

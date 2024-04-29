@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const Task = require("./Task");
 
-const userSchema = {
+const userSchema = new Schema ({
   username: {
     type: String,
     required: true,
@@ -12,6 +12,6 @@ const userSchema = {
     of: Task.schema,
     default: {},
   },
-};
+});
 
 module.exports = mongoose.model("User", userSchema);

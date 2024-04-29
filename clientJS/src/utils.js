@@ -1,6 +1,6 @@
 import { ACTIONS } from "./constants";
 
-import { fetchSession, fetchLogin } from "./services";
+import { fetchSession, fetchLogin, fetchLogout } from "./services";
 
 export function checkSession(dispatch) {
   return function () {
@@ -19,6 +19,19 @@ export function onLogin(dispatch) {
       .then((data) => {
         dispatch({ type: ACTIONS.LOG_IN, username: data.username });
         console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+}
+
+export function onLogout(dispatch) {
+  return function () {
+    fetchLogout()
+      .then((data) => {
+        console.log(data);
+        dispatch({ type: ACTIONS.LOG_OUT });
       })
       .catch((err) => {
         console.log(err);

@@ -9,15 +9,20 @@ export const intialState = {
 };
 
 function reducer(state, action) {
-    switch(state, action) {
-        case ACTIONS.LOG_IN: 
-        console.log('came here')
-        return {
-            ...state,
-            loginStatus: LOGIN_STATUS.IS_LOGGED_IN,
-            username: action.username,
-        }
-    }
+  switch ((state, action)) {
+    case ACTIONS.LOG_IN:
+      return {
+        ...state,
+        loginStatus: LOGIN_STATUS.IS_LOGGED_IN,
+        username: action.username,
+      };
+    case ACTIONS.LOG_OUT:
+      return {
+        ...state,
+        loginStatus: LOGIN_STATUS.NOT_LOGGED_IN,
+        username: "",
+      };
+  }
 }
 
 export default reducer;

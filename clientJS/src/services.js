@@ -25,3 +25,10 @@ export function fetchLogin(username) {
 
   return chainPromise(fetched);
 }
+
+export function fetchLogout() {
+  const fetched = fetch("/api/v1/session", {
+    method: "DELETE",
+  });
+  return chainPromise(fetched);
+}

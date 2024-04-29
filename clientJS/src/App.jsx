@@ -1,7 +1,9 @@
 import { useReducer } from "react";
 import reducer, { intialState } from "./reducer";
 
-import { onLogin } from "./utils";
+import { onLogin, onLogout } from "./utils";
+
+import { fetchLogout } from "./services";
 
 import FormLogin from "./FormLogin";
 
@@ -12,17 +14,18 @@ function App() {
 
   return (
     <div>
-
       <button
         className=""
         type="button"
-        onClick={() => {
-          fetch("/api/v1/session");
-        }}
+        onClick={() => fetchLogout()}
+        // onClick={() => {
+        //   console.log("clicked");
+        //   onLogout;
+        // }}
       >
-        test
+        Logout
       </button>
-      
+
       <FormLogin onLogin={onLogin(dispatch)} />
     </div>
   );

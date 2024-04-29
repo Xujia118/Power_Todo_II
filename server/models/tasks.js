@@ -1,48 +1,65 @@
-// const uuid = require("uuid").v4;
-// const User = require("../schemas/User");
+const uuid = require("uuid").v4;
+const User = require("../schemas/User");
 
-// // get user data
-// async function getUserData(username) {
-//   const userData = await User.findOne({ username });
-//   return userData;
-// }
+// get tasks
+async function getUserData(username) {
+  try {
+    const userData = await User.findOne({ username });
+    return userData.tasks;
+  } catch (err) {
+    console.log(err);
+  }
+}
 
-// // add task
-// async function addTask(username) {
-//   try {
-//     const taskId = uuid();
-//     const taskName = "testTask1";
-//     const taskDate = new Date();
-//     const taskNotes = {};
+// add task
+async function addTask(username) {
+  try {
+    const taskId = uuid();
+    const taskName = "testTask1";
+    const taskDate = new Date();
+    const taskNotes = {};
 
-//     const newTask = {
-//       name: taskName,
-//       notes: taskNotes,
-//       date: taskDate,
-//     };
+    const newTask = {
+      name: taskName,
+      notes: taskNotes,
+      date: taskDate,
+    };
 
-//     await User.updateOne(
-//       { username },
-//       { $set: { [`tasks.${taskId}`]: newTask } }
-//     );
+    await User.updateOne(
+      { username },
+      { $set: { [`tasks.${taskId}`]: newTask } }
+    );
 
-//     return newTask;
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
+    return newTask;
+  } catch (err) {
+    console.log(err);
+  }
+}
 
-// async function test() {
-//   await addTask("xujia");
-//   const testUserData = await getUserData("xujia");
-//   console.log("2", testUserData);
-// }
+// delete task
+async function deleteTask(username, taskId) {
+  try {
+    await User.updateOne({ username }, { $unset: { [`tasks.${taskId}`]: "" } });
+  } catch (err) {
+    console.log(err);
+  }
+}
 
-// test();
+// update task. Only update task name, leave notes name to notes apis
+async function updateTask(username, taskId, newName) {
+  try {
+    await User.updateOne(
+      { username, [`tasks.${taskId}`]: { $exists: true } },
+      { $set: { [`tasks.${taskId}.name`]: newName } }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+}
 
-// // task name can't be too long
-
-// module.exports = {
-//   getUserData,
-//   addTask,
-// };
+module.exports = {
+  getUserData,
+  addTask,
+  deleteTask,
+  updateTask,
+};

@@ -52,9 +52,13 @@ async function deleteTask(username, taskId) {
   }
 }
 
-// update task
-async function updateTask(username) {
+// update task. Only update task name, leave notes name to notes apis
+async function updateTask(username, taskId, newName) {
   try {
+    await User.updateOne(
+      { username, [`tasks.${taskId}`]: { $exists: true } },
+      { $set: { [`tasks.${taskId}.name`]: newName } }
+    );
   } catch (err) {
     console.log(err);
   }
@@ -65,11 +69,11 @@ async function test() {
   const testUserData = await getUserData("xujia");
   console.log("2", testUserData);
 }
-// test();
 
 module.exports = {
   isValid,
   userExists,
   addTask,
   deleteTask,
+  updateTask,
 };

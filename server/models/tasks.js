@@ -2,7 +2,7 @@ const uuid = require("uuid").v4;
 const User = require("../schemas/User");
 
 // get tasks
-async function getUserData(username) {
+async function getUserTasks(username) {
   try {
     const userData = await User.findOne({ username });
     return userData.tasks;
@@ -58,7 +58,7 @@ async function updateTask(username, taskId, newName) {
 }
 
 module.exports = {
-  getUserData,
+  getUserTasks,
   addTask,
   deleteTask,
   updateTask,

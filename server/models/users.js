@@ -64,6 +64,13 @@ async function updateTask(username, taskId, newName) {
   }
 }
 
+// add note
+
+// delete note
+
+// update note
+
+
 async function test() {
   await addTask("xujia");
   const testUserData = await getUserData("xujia");

@@ -22,6 +22,14 @@ function reducer(state, action) {
         loginStatus: LOGIN_STATUS.NOT_LOGGED_IN,
         username: "",
       };
+    case ACTIONS.LOAD_TASKS:
+      return {
+        ...state,
+        taskList: action.tasks,
+        }
+      
+    default:
+      return state;
   }
 }
 

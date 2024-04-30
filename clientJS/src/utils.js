@@ -1,7 +1,8 @@
 import { ACTIONS } from "./constants";
 
-import { fetchSession, fetchLogin, fetchLogout } from "./services";
+import { fetchSession, fetchLogin, fetchLogout, fetchTasks } from "./services";
 
+// Sessions
 export function checkSession(dispatch) {
   return function () {
     fetchSession()
@@ -32,6 +33,20 @@ export function onLogout(dispatch) {
       .then((data) => {
         console.log(data);
         dispatch({ type: ACTIONS.LOG_OUT });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+}
+
+// Tasks
+export function onFetchTasks(dispatch) {
+  return function () {
+    fetchTasks()
+      .then((data) => {
+        console.log(data); // got the data, and now setTaskList 
+        dispatch({ type: ACTIONS.LOAD_TASKS, tasks: data.allTasks });
       })
       .catch((err) => {
         console.log(err);

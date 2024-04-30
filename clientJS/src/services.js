@@ -9,6 +9,7 @@ function chainPromise(promise) {
     });
 }
 
+// Sessions
 export function fetchSession() {
   const fetched = fetch("/api/v1/session");
   return chainPromise(fetched);
@@ -30,5 +31,11 @@ export function fetchLogout() {
   const fetched = fetch("/api/v1/session", {
     method: "DELETE",
   });
+  return chainPromise(fetched);
+}
+
+// Tasks
+export function fetchTasks(username) {
+  const fetched = fetch("/api/v1/tasks")
   return chainPromise(fetched);
 }

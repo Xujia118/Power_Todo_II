@@ -1,11 +1,10 @@
 import { useReducer } from "react";
 import reducer, { intialState } from "./reducer";
 
-import { onLogin, onLogout } from "./utils";
-
-import { fetchLogout } from "./services";
+import { onFetchTasks, onLogin, onLogout } from "./utils";
 
 import FormLogin from "./FormLogin";
+import TaskList from "./TaskList";
 
 import "./App.css";
 
@@ -14,19 +13,16 @@ function App() {
 
   return (
     <div>
-      <button
-        className=""
-        type="button"
-        onClick={() => fetchLogout()}
-        // onClick={() => {
-        //   console.log("clicked");
-        //   onLogout;
-        // }}
-      >
+      <button className="" type="button" onClick={onLogout(dispatch)}>
         Logout
       </button>
 
+      <button className="" type="button" onClick={onFetchTasks(dispatch)}>
+        Get Tasks
+      </button>
+
       <FormLogin onLogin={onLogin(dispatch)} />
+      <TaskList />
     </div>
   );
 }

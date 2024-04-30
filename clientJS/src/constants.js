@@ -35,6 +35,9 @@ export const MESSAGES = {
 export const ACTIONS = {
   LOG_IN: "logIn",
   LOG_OUT: "logOut",
+  LOAD_TASKS: "load tasks",
+
+  
   START_LOADING_TODOS: "startLoadingTodos",
   REPLACE_TODOS: "replaceTodos",
   REPORT_ERROR: "reportError",

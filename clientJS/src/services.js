@@ -35,7 +35,7 @@ export function fetchLogout() {
 }
 
 // Tasks
-export function fetchTasks(username) {
+export function fetchTasks() {
   const fetched = fetch("/api/v1/tasks")
   return chainPromise(fetched);
 }

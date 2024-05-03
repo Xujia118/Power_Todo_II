@@ -9,12 +9,12 @@ export const intialState = {
 };
 
 function reducer(state, action) {
-  switch ((state, action)) {
+  switch (action.type) {
     case ACTIONS.LOG_IN:
       return {
         ...state,
         loginStatus: LOGIN_STATUS.IS_LOGGED_IN,
-        username: action.username,
+        username: action.payload,
       };
     case ACTIONS.LOG_OUT:
       return {
@@ -25,8 +25,13 @@ function reducer(state, action) {
     case ACTIONS.LOAD_TASKS:
       return {
         ...state,
-        taskList: action.tasks,
+        taskList: action.payload,
         }
+    case ACTIONS.LOAD_NOTES:
+      return {
+        ...state,
+        noteList: action.payload
+      }
       
     default:
       return state;

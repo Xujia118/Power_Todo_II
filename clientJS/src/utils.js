@@ -7,8 +7,12 @@ export function checkSession(dispatch) {
   return function () {
     fetchSession()
       .then((data) => {
-        dispatch({ type: ACTIONS.LOG_IN, username: data.username }); // maybe return task list after this
-        console.log(data);
+        dispatch({ type: ACTIONS.LOG_IN, payload: data.username });
+        return fetchTasks();
+      })
+      .then(data => {
+        console.log(data.allTasks)
+        dispatch({ type: ACTIONS.LOAD_TASKS, payload: data.allTasks})
       })
       .catch((err) => console.log(err));
   };
@@ -46,7 +50,7 @@ export function onFetchTasks(dispatch) {
     fetchTasks()
       .then((data) => {
         console.log(data); // got the data, and now setTaskList 
-        dispatch({ type: ACTIONS.LOAD_TASKS, tasks: data.allTasks });
+        dispatch({ type: ACTIONS.LOAD_TASKS, payload: data.allTasks });
       })
       .catch((err) => {
         console.log(err);

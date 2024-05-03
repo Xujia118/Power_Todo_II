@@ -36,6 +36,7 @@ export const ACTIONS = {
   LOG_IN: "logIn",
   LOG_OUT: "logOut",
   LOAD_TASKS: "load tasks",
+  LOAD_NOTES: "load notes",
 
   
   START_LOADING_TODOS: "startLoadingTodos",

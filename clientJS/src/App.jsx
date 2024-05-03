@@ -1,14 +1,15 @@
 import { useEffect, useReducer } from "react";
 import { Route, Routes } from "react-router-dom";
 
+import { LOGIN_STATUS } from "./constants";
 import reducer, { intialState } from "./reducer";
 import { checkSession, onLogin, onLogout } from "./utils";
 
 import FormLogin from "./FormLogin";
 import TaskList from "./TaskList";
+import TaskDetail from "./TaskDetail";
 
 import "./App.css";
-import TaskDetail from "./TaskDetail";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, intialState);
@@ -18,20 +19,29 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <button className="" type="button" onClick={onLogout(dispatch)}>
-        Logout
-      </button>
-      <FormLogin onLogin={onLogin(dispatch)} />
+    <>
+      {state.loginStatus === LOGIN_STATUS.NOT_LOGGED_IN && (
+        <FormLogin onLogin={onLogin(dispatch)} />
+      )}
 
-      <Routes>
-        <Route path="/" element={<TaskList tasks={state.taskList} />}></Route>
-        <Route
-          path="/:taskId"
-          element={<TaskDetail notes={state.noteList} />}
-        ></Route>
-      </Routes>
-    </div>
+      {state.loginStatus === LOGIN_STATUS.IS_LOGGED_IN && (
+        <>
+          <button className="" type="button" onClick={onLogout(dispatch)}>
+            Logout
+          </button>
+          <Routes>
+            <Route
+              path="/"
+              element={<TaskList tasks={state.taskList} />}
+            ></Route>
+            <Route
+              path="/:taskId"
+              element={<TaskDetail notes={state.noteList} />}
+            ></Route>
+          </Routes>
+        </>
+      )}
+    </>
   );
 }
 

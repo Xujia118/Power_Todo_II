@@ -10,7 +10,6 @@ function FormLogin({ onLogin }) {
 
   return (
     <div>
-      <h1>{input}</h1>
       <form className="form-login" onSubmit={handleSubmit}>
         <input
           type="text"

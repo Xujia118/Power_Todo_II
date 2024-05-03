@@ -11,7 +11,6 @@ export function checkSession(dispatch) {
         return fetchTasks();
       })
       .then(data => {
-        console.log(data.allTasks)
         dispatch({ type: ACTIONS.LOAD_TASKS, payload: data.allTasks})
       })
       .catch((err) => console.log(err));

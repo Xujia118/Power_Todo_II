@@ -10,6 +10,7 @@ import TaskList from "./TaskList";
 import TaskDetail from "./TaskDetail";
 
 import "./App.css";
+import Header from "./Header";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, intialState);
@@ -26,19 +27,20 @@ function App() {
 
       {state.loginStatus === LOGIN_STATUS.IS_LOGGED_IN && (
         <>
-          <button className="" type="button" onClick={onLogout(dispatch)}>
-            Logout
-          </button>
-          <Routes>
-            <Route
-              path="/"
-              element={<TaskList tasks={state.taskList} />}
-            ></Route>
-            <Route
-              path="/:taskId"
-              element={<TaskDetail notes={state.noteList} />}
-            ></Route>
-          </Routes>
+          <Header user={state.username} onLogout={onLogout(dispatch)} />
+
+          <main>
+            <Routes>
+              <Route
+                path="/"
+                element={<TaskList tasks={state.taskList} />}
+              ></Route>
+              <Route
+                path="/:taskId"
+                element={<TaskDetail notes={state.noteList} />}
+              ></Route>
+            </Routes>
+          </main>
         </>
       )}
     </>

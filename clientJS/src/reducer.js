@@ -3,7 +3,7 @@ import { LOGIN_STATUS, SERVER, CLIENT, ACTIONS } from "./constants";
 export const intialState = {
   error: "",
   username: "",
-  loginStatus: LOGIN_STATUS.PENDING,
+  loginStatus: LOGIN_STATUS.NOT_LOGGED_IN,
   taskList: {},
   noteList: {},
 };

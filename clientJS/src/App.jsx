@@ -41,7 +41,7 @@ function App() {
               ></Route>
               <Route
                 path="/add"
-                element={<AddTask onAddTask={onAddTask} />}
+                element={<AddTask onAddTask={onAddTask(dispatch)} />}
               ></Route>
             </Routes>
           </main>

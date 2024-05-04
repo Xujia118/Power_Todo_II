@@ -40,8 +40,8 @@ export function fetchTasks() {
   return chainPromise(fetched);
 }
 
-export function fetchAddTask({ newTask }) {
-  const fetched = fetch("/api/v1/tasks/", {
+export function fetchAddTask(newTask) {
+  const fetched = fetch("/api/v1/tasks/add", {
     method: "POST",
     headers: {
       "content-type": "application/json",

@@ -65,10 +65,11 @@ export function onFetchTasks(dispatch) {
 }
 
 export function onAddTask(dispatch) {
-  return function () {
+  return function (newTask) {
     fetchAddTask(newTask)
       .then((data) => {
         console.log(data);
+        dispatch({ type: ACTIONS.ADD_TASK, payload: data.addedTask })
       })
       .catch((err) => {
         console.log(err);

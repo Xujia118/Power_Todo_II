@@ -23,24 +23,18 @@ router.get("/", async (req, res) => {
 // Might not be necessary
 
 // Create a task
-router.post("/", async (req, res) => {
+router.post("/add", async (req, res) => {
   const username = authenticate(req, res);
 
-  const { newTaskName, newTaskDeadline } = req.body;
+  const { newTask } = req.body;
   
-  console.log(newTaskName);
-  console.log(newTaskDeadline);
-
-  const taskToAdd = {
-    name: newTaskName,
-    deadline:newTaskDeadline
-  };
-
+  console.log("new task", newTask);
+  
   try {
-    const newTask = tasks.addTask(username, taskToAdd);
-    res.status(201).json({ newTask });
+    const addedTask = tasks.addTask(username, newTask);
+    res.status(201).json({ addedTask });
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 });
 

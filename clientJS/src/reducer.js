@@ -37,7 +37,7 @@ function reducer(state, action) {
       return {
         ...state,
         taskList: {
-          ...taskList,
+          ...state.taskList,
           [action.payload.id]: action.payload
         }
       }
@@ -46,7 +46,7 @@ function reducer(state, action) {
       return {
         ...state,
         taskList: {
-          
+
         }
       }
 

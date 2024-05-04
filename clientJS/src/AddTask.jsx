@@ -1,13 +1,28 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import "./AddTask.css";
 
-function AddTask() {
+function AddTask({ onAddTask }) {
+  const navigate = useNavigate()
+   
+  const [newTask, setNewTask] = useState({
+    name: "",
+    deadline: "",
+  });
+
+  function handleChange(e) {
+    setNewTask((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  }
+  
   function handleSubmit(e) {
     e.preventDefault();
-    // call add task service
-    // we have a ful package to send
-
-    // At submit, navigate back to tasks page
-    
+    console.log(newTask);
+    onAddTask(newTask);
+    navigate("/")
   }
   return (
     <>
@@ -15,14 +30,19 @@ function AddTask() {
         <div className="form-container">
           <label htmlFor="">
             Task Title:
-            <input type="text" name="newTaskName" placeholder="Add task..." />
+            <input
+              type="text"
+              name="name"
+              placeholder="Add task..."
+              onChange={handleChange}
+            />
           </label>
         </div>
 
         <div className="form-container">
           <label htmlFor="">
             Task Deadline
-            <input type="date" name="newTaskDeadline"/>
+            <input type="date" name="deadline" onChange={handleChange} />
           </label>
         </div>
 

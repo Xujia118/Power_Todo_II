@@ -9,7 +9,6 @@ async function getUserTasks(username) {
   } catch (err) {
     console.log(err);
   }
-
 }
 
 // Get one task of a user
@@ -29,13 +28,10 @@ async function addTask(username, newTask) {
   }
 }
 
-// const testTask = {
-//   name: "test task",
-//   // deadline: "some date",
-// }
+const testTask = { name: "test post task", deadline: "2024-05-04" };
 
-// const testUser = 'xujia' 
-// addTask(testUser, testTask)
+const testUser = "xujia";
+addTask(testUser, testTask);
 
 // delete task
 async function deleteTask(username, taskId) {

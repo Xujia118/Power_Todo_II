@@ -2,6 +2,7 @@ import { LOGIN_STATUS, SERVER, CLIENT, ACTIONS } from "./constants";
 
 export const intialState = {
   error: "",
+  isLoading: false,
   username: "",
   loginStatus: LOGIN_STATUS.NOT_LOGGED_IN,
   taskList: {},
@@ -10,6 +11,11 @@ export const intialState = {
 
 function reducer(state, action) {
   switch (action.type) {
+    case ACTIONS.START_LOADING:
+      return {
+        ...state,
+        isLoading: true,
+      }
     case ACTIONS.LOG_IN:
       return {
         ...state,
@@ -27,6 +33,22 @@ function reducer(state, action) {
         ...state,
         taskList: action.payload,
         }
+
+    // The following actions are solely to trigger useEffect to call checkSession
+    case ACTIONS.ADD_TASK:
+      return {
+        ...state
+      }
+    case ACTIONS.DELETE_TASK:
+      return {
+        ...state,
+      }
+    case ACTIONS.UPDATE_TASK:
+      return {
+        ...state
+      }
+
+    
     case ACTIONS.LOAD_NOTES:
       return {
         ...state,

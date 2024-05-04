@@ -25,7 +25,8 @@ function App() {
 
   useEffect(() => {
     checkSession(dispatch)();
-  }, []);
+    console.log("effect triggered")
+  }, [state.loginStatus, dispatch]);
 
   return (
     <>

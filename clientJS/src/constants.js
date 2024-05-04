@@ -33,6 +33,7 @@ export const MESSAGES = {
 };
 
 export const ACTIONS = {
+  START_LOADING: "start loading",
   LOG_IN: "logIn",
   LOG_OUT: "logOut",
 

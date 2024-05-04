@@ -34,6 +34,10 @@ router.post("/add", async (req, res) => {
   }
 
   const { newTask } = req.body;
+
+  console.log("created:", newTask)
+
+
   try {
     const updateResult = tasks.addTask(username, newTask);
     if (updateResult) {

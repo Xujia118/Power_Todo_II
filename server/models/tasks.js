@@ -17,7 +17,7 @@ async function addTask(username, newTask) {
     const taskId = uuid();
     const updateResult = await User.updateOne(
       { username },
-      { $set: { [`tasks.${taskId}`]: {id:taskId, newTask} } }
+      { $set: { [`tasks.${taskId}`]: {id:taskId, ...newTask} } }
     );
 
     return updateResult.modifiedCount ? true : false;

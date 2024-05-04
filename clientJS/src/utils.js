@@ -72,6 +72,7 @@ export function onAddTask(dispatch) {
   return function (newTask) {
     fetchAddTask(newTask)
       .then(() => {
+        dispatch({ type: ACTIONS.ADD_TASK });
         return fetchTasks();
       })
       .then((data) => {
@@ -87,7 +88,8 @@ export function onDeleteTask(dispatch) {
   return function (taskId) {
     fetchDeleteTask(taskId)
       .then((data) => {
-        console.log(data)
+        dispatch({ type: ACTIONS.DELETE_TASK });
+        console.log(data);
         return fetchTasks();
       })
       .then((data) => {
@@ -103,6 +105,7 @@ export function onUpdateTask(dispatch) {
   return function (taskId) {
     fetchUpdateTask(taskId)
       .then(() => {
+        dispatch({ type: ACTIONS.UPDATE_TASK });
         return fetchTasks();
       })
       .then((data) => {

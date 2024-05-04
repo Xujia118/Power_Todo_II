@@ -1,21 +1,13 @@
 import { Link } from "react-router-dom";
+import AddTask from "./AddTask"
 
 import "./TaskList.css";
 
 function TaskList({ tasks }) {
-  function handleSubmit(e) {
-    e.preventDefault();
-    // call add task service
-  }
 
   return (
     <>
-      <form className="form-add-task" onSubmit={handleSubmit}>
-        <input type="text" placeholder="Add task..." />
-        <button className="button-add-task" type="submit">
-          Add Task
-        </button>
-      </form>
+      <Link to={"/add"}>Add Task</Link>
 
       <ul className="task-list">
         {Object.values(tasks).map((task) => (

@@ -22,9 +22,6 @@ app.use("/api/v1/session", userRouter);
 const taskRouter = require("./routes/tasks");
 app.use("/api/v1/tasks", taskRouter);
 
-const noteRouter = require("./routes/notes");
-app.use("/api/v1/tasks", noteRouter);
-
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

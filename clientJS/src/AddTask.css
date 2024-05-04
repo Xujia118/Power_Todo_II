@@ -1,0 +1,8 @@
+.form-add-task {
+    display: flex;
+    flex-direction: column;
+} 
+
+.form-container {
+    margin-bottom: 1rem;
+}

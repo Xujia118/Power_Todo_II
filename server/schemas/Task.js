@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const Note = require("./Notes");
 
 const taskSchema = new Schema({
   name: {
@@ -9,13 +8,15 @@ const taskSchema = new Schema({
   },
   notes: {
     type: Map,
-    of: Note.schema,
     default: {}  
   },
   date: {
     type: Date,
     require: true,
     default: Date.now
+  },  
+  deadline: {
+    type: Date,
   },
   done: Boolean,
 });

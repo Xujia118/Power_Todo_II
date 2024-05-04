@@ -22,6 +22,21 @@ router.get("/", async (req, res) => {
 // Get one task
 
 // Create a task
+router.post("/", async (req, res)=> {
+  const username = authenticate(req, res);
+  const {newTaskName, newTaskDeadline, newTaskNotes } = req.body;
+
+  const newTaskObj = {
+
+  }
+
+  try {
+
+  } catch(err) {
+
+  }
+
+} )
 
 // Delete a task
 

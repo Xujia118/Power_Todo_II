@@ -20,7 +20,6 @@ function AddTask({ onAddTask }) {
   
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(newTask);
     onAddTask(newTask);
     navigate("/")
   }

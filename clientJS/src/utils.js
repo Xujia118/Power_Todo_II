@@ -64,12 +64,18 @@ export function onFetchTasks(dispatch) {
   };
 }
 
+// For add, update and delete, DB returns a message success or not
+// After each operation, We just need to load task list again
+// This way, our task list is always updated with DB
+
 export function onAddTask(dispatch) {
   return function (newTask) {
     fetchAddTask(newTask)
+      .then(() => {
+        return fetchTasks();
+      })
       .then((data) => {
-        console.log(data);
-        dispatch({ type: ACTIONS.ADD_TASK, payload: data.addedTask })
+        dispatch({ type: ACTIONS.LOAD_TASKS, payload: data.allTasks });
       })
       .catch((err) => {
         console.log(err);
@@ -78,10 +84,13 @@ export function onAddTask(dispatch) {
 }
 
 export function onDeleteTask(dispatch) {
-  return function () {
+  return function (taskId) {
     fetchDeleteTask(taskId)
+      .then(() => {
+        return fetchTasks();
+      })
       .then((data) => {
-        console.log(data);
+        dispatch({ type: ACTIONS.LOAD_TASKS, payload: data.allTasks });
       })
       .catch((err) => {
         console.log(err);
@@ -90,10 +99,13 @@ export function onDeleteTask(dispatch) {
 }
 
 export function onUpdateTask(dispatch) {
-  return function () {
+  return function (taskId) {
     fetchUpdateTask(taskId)
+      .then(() => {
+        return fetchTasks();
+      })
       .then((data) => {
-        console.log(data);
+        dispatch({ type: ACTIONS.LOAD_TASKS, payload: data.allTasks });
       })
       .catch((err) => {
         console.log(err);

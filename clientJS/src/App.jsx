@@ -3,7 +3,14 @@ import { Route, Routes } from "react-router-dom";
 
 import { LOGIN_STATUS } from "./constants";
 import reducer, { intialState } from "./reducer";
-import { checkSession, onLogin, onLogout, onAddTask } from "./utils";
+import {
+  checkSession,
+  onLogin,
+  onLogout,
+  onAddTask,
+  onDeleteTask,
+  onUpdateTask,
+} from "./utils";
 
 import FormLogin from "./FormLogin";
 import TaskList from "./TaskList";
@@ -33,7 +40,13 @@ function App() {
             <Routes>
               <Route
                 path="/"
-                element={<TaskList tasks={state.taskList} />}
+                element={
+                  <TaskList
+                    tasks={state.taskList}
+                    onDeleteTask={onDeleteTask(dispatch)}
+                    onUpdateTask={onUpdateTask(dispatch)}
+                  />
+                }
               ></Route>
               <Route
                 path="/:taskId"

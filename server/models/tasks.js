@@ -11,46 +11,47 @@ async function getUserTasks(username) {
   }
 }
 
-// Get one task of a user
-
 // add task
 async function addTask(username, newTask) {
   try {
     const taskId = uuid();
-    await User.updateOne(
+
+    const updateResult = await User.updateOne(
       { username },
       { $set: { [`tasks.${taskId}`]: newTask } }
     );
 
-    return newTask;
+    return updateResult.modifiedCount ? true : false;
   } catch (err) {
-    console.log(err);
+    throw new Error("Failed to add task");
   }
 }
-
-const testTask = { name: "test post task", deadline: "2024-05-04" };
-
-const testUser = "xujia";
-addTask(testUser, testTask);
 
 // delete task
 async function deleteTask(username, taskId) {
   try {
-    await User.updateOne({ username }, { $unset: { [`tasks.${taskId}`]: "" } });
+    const deleteResult = await User.updateOne(
+      { username },
+      { $unset: { [`tasks.${taskId}`]: "" } }
+    );
+
+    return deleteResult.modifiedCount ? true : false;
   } catch (err) {
-    console.log(err);
+    throw new Error("Failed to delete task");
   }
 }
 
 // update task. Only update task name, leave notes name to notes apis
 async function updateTask(username, taskId, newName) {
   try {
-    await User.updateOne(
+    const updateResult = await User.updateOne(
       { username, [`tasks.${taskId}`]: { $exists: true } },
       { $set: { [`tasks.${taskId}.name`]: newName } }
     );
+
+    return updateResult.modifiedCount ? true : false;
   } catch (err) {
-    console.log(err);
+    throw new Error("Failed to update task");
   }
 }
 

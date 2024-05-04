@@ -51,7 +51,7 @@ router.delete("/:taskId", async (req, res) => {
   if (!username) {
     return;
   }
-
+ 
   const { taskId } = req.params;
   console.log(taskId);
 
@@ -73,27 +73,27 @@ router.delete("/:taskId", async (req, res) => {
 
 // Update a task, in our case task name
 // We will update notes separately
-router.patch("/:taskId", async (req, res) => {
-  const username = authenticate(req, res);
-  if (!username) {
-    return;
-  }
+// router.patch("/:taskId", async (req, res) => {
+//   const username = authenticate(req, res);
+//   if (!username) {
+//     return;
+//   }
 
-  const { taskId } = req.params;
+//   const { taskId } = req.params;
 
-  try {
-    const updateResult = await User.updateOne(
-      { username, [`tasks.${taskId}`]: { $exists: true } },
-      { $set: { [`tasks.${taskId}.name`]: newName } }
-    );
+//   try {
+//     const updateResult = await User.updateOne(
+//       { username, [`tasks.${taskId}`]: { $exists: true } },
+//       { $set: { [`tasks.${taskId}.name`]: newName } }
+//     );
 
-    if (updateResult) {
-      return res.status(200).json({ message: "Update successful" });
-    }
-    res.status(404).json({ message: "Task not found" });
-  } catch (err) {
-    throw new Error("Failed to update task");
-  }
-});
+//     if (updateResult) {
+//       return res.status(200).json({ message: "Update successful" });
+//     }
+//     res.status(404).json({ message: "Task not found" });
+//   } catch (err) {
+//     throw new Error("Failed to update task");
+//   }
+// });
 
 module.exports = router;

@@ -86,7 +86,8 @@ export function onAddTask(dispatch) {
 export function onDeleteTask(dispatch) {
   return function (taskId) {
     fetchDeleteTask(taskId)
-      .then(() => {
+      .then((data) => {
+        console.log(data)
         return fetchTasks();
       })
       .then((data) => {

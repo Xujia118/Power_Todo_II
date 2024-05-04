@@ -51,7 +51,7 @@ export function fetchAddTask(newTask) {
   return chainPromise(fetched);
 }
 
-export function fetchDeleteTask({ taskId }) {
+export function fetchDeleteTask(taskId) {
   const fetched = fetch(`/api/v1/tasks/${taskId}`, {
     method: "DELETE",
   });

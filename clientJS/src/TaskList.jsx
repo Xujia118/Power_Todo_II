@@ -4,11 +4,13 @@ import "./TaskList.css";
 
 function TaskList({ tasks, onDeleteTask, onUpdateTask }) {
   function handleDelete(taskId) {
+    console.log("clicked")
+    console.log(taskId)
     onDeleteTask(taskId);
   }
 
   function handleEdit(taskId) {
-    onUpdateTask(taskId);
+    // onUpdateTask(taskId);
   }
 
   return (
@@ -19,17 +21,17 @@ function TaskList({ tasks, onDeleteTask, onUpdateTask }) {
         {Object.values(tasks)
           .reverse()
           .map((task) => (
-            <li className="task-item" key={task._id}>
-              <Link to={`/${task._id}`}>
+            <li className="task-item" key={task.id}>
+              <Link to={`/${task.id}`}>
                 <p className="task-name">{task.name}</p>
               </Link>
               {/* <p>Deadline: {task.deadline.slice(0, 10)}</p> */}
-              <button className="button-edit" onClick={handleEdit(task._id)}>
+              <button className="button-edit" onClick={() => handleEdit(task.id)}>
                 Edit
               </button>
               <button
                 className="button-delete"
-                onClick={handleDelete(task._id)}
+                onClick={() => handleDelete(task.id)}
               >
                 Delete
               </button>

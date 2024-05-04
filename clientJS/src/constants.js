@@ -35,14 +35,17 @@ export const MESSAGES = {
 export const ACTIONS = {
   LOG_IN: "logIn",
   LOG_OUT: "logOut",
-  LOAD_TASKS: "load tasks",
-  LOAD_NOTES: "load notes",
 
+  LOAD_TASKS: "load tasks",
+  ADD_TASK: "add task",
+  DELETE_TASK: "delete task",
+  UPDATE_TASK: "update task",
+
+  LOAD_NOTES: "load notes",
+  ADD_NOTE: "add note",
+  DELETE_NOTE: "delete note",
+  UPDATE_NOTE: "update note", 
   
   START_LOADING_TODOS: "startLoadingTodos",
-  REPLACE_TODOS: "replaceTodos",
   REPORT_ERROR: "reportError",
-  TOGGLE_TODO: "toggleTodo",
-  DELETE_TODO: "deleteTodo",
-  ADD_TODO: "addTodo",
 };

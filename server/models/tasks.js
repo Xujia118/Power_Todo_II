@@ -18,16 +18,6 @@ async function getUserTasks(username) {
 async function addTask(username, newTask) {
   try {
     const taskId = uuid();
-    // const taskName = "testTask1";
-    // const taskDeadline = new Date();
-    // const taskNotes = {};
-
-    // const newTask = {
-    //   name: taskName,
-    //   notes: taskNotes,
-    //   deadline: taskDeadline,
-    // };
-
     await User.updateOne(
       { username },
       { $set: { [`tasks.${taskId}`]: newTask } }
@@ -39,17 +29,13 @@ async function addTask(username, newTask) {
   }
 }
 
-const testTask = {
-  name: "test task",
-  notes: {
-    abc123: "note1",
-    def456: "note2"
-  },
-  // deadline: "some date",
-}
+// const testTask = {
+//   name: "test task",
+//   // deadline: "some date",
+// }
 
-const testUser = 'xujia' 
-addTask(testUser, testTask)
+// const testUser = 'xujia' 
+// addTask(testUser, testTask)
 
 // delete task
 async function deleteTask(username, taskId) {

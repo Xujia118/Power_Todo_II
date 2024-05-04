@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { LOGIN_STATUS } from "./constants";
 import reducer, { intialState } from "./reducer";
-import { checkSession, onLogin, onLogout } from "./utils";
+import { checkSession, onLogin, onLogout, onAddTask } from "./utils";
 
 import FormLogin from "./FormLogin";
 import TaskList from "./TaskList";
@@ -39,7 +39,10 @@ function App() {
                 path="/:taskId"
                 element={<TaskDetail notes={state.noteList} />}
               ></Route>
-              <Route path="/add" element={<AddTask />}></Route>
+              <Route
+                path="/add"
+                element={<AddTask onAddTask={onAddTask} />}
+              ></Route>
             </Routes>
           </main>
         </>

@@ -32,6 +32,25 @@ function reducer(state, action) {
         ...state,
         noteList: action.payload
       }
+    
+    case ACTIONS.ADD_TASK:
+      return {
+        ...state,
+        taskList: {
+          ...taskList,
+          [action.payload.id]: action.payload
+        }
+      }
+
+    case ACTIONS.DELETE_TASK:
+      return {
+        ...state,
+        taskList: {
+          
+        }
+      }
+
+
       
     default:
       return state;

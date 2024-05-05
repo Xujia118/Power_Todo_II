@@ -13,9 +13,9 @@ function TaskList({ tasks, onDeleteTask, onUpdateTask }) {
 
   return (
     <>
-      <Link to={"/add"}>Add Task</Link>
+      <Link to={"/add"}>Add Task Icon</Link>
 
-      <ul className="task-list">
+      <ul className="task-menu">
         {Object.values(tasks)
           .reverse()
           .map((task) => (

@@ -1,0 +1,13 @@
+.login-page {
+    margin: 5rem;
+    margin-top: 10rem;
+}
+
+.form-login {
+    margin: 2rem;
+}
+
+.main-logo {
+    margin: 2rem;
+    color: var(--panel-color)
+}

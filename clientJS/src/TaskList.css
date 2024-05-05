@@ -1,5 +1,41 @@
-.task-list {
-    list-style: none;
+.task-container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+}
 
+.task-menu {
     padding: 0;
+    grid-column: span 12;
+}
+
+.task-item {
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    background-color: var(--panel-color);
+    color: var(--text-color);
+
+    border-radius: 5px;
+
+    text-transform: capitalize;
+}
+
+.task-name:hover {
+    /* text-decoration: underline; */
+    cursor: pointer;
+}
+
+
+@media (min-width: 44rem) {
+    .modal {
+        grid-column: 4 / 10;
+    }
+
+    .task-menu {
+        grid-column: 4 / 10;
+    }
 }

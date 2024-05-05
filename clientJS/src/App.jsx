@@ -25,13 +25,14 @@ function App() {
 
   useEffect(() => {
     checkSession(dispatch)();
-    console.log("effect triggered")
   }, [state.loginStatus, dispatch]);
 
   return (
     <>
       {state.loginStatus === LOGIN_STATUS.NOT_LOGGED_IN && (
-        <FormLogin onLogin={onLogin(dispatch)} />
+        <main>
+          <FormLogin onLogin={onLogin(dispatch)} />
+        </main>
       )}
 
       {state.loginStatus === LOGIN_STATUS.IS_LOGGED_IN && (

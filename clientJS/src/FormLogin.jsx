@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import "./FormLogin.css";
+
 function FormLogin({ onLogin }) {
   const [input, setInput] = useState("");
 
@@ -9,7 +11,8 @@ function FormLogin({ onLogin }) {
   }
 
   return (
-    <div>
+    <div className="login-page">
+      <h1 className="main-logo">Power Todo</h1>
       <form className="form-login" onSubmit={handleSubmit}>
         <input
           type="text"

@@ -4,7 +4,7 @@ const uuid = require("uuid").v4;
 const User = require("../schemas/User");
 const Task = require("../schemas/Task");
 
-// Get all tasks of a user
+// Tasks
 async function getTasks(username) {
   try {
     const userData = await User.findOne({ username });
@@ -14,11 +14,10 @@ async function getTasks(username) {
   }
 }
 
-async function getTask({ username, taskId }) {
+async function getOneTask({ username, taskId }) {
   try {
     const userData = await User.findOne({ username });
     const task = userData.tasks[taskId];
-    console.log("In getTask:", task);
     return task;
   } catch (err) {
     console.log(err);
@@ -37,26 +36,11 @@ async function addTask(username, newTask) {
       { username },
       { $set: { [`tasks.${createdTask._id}`]: createdTask } }
     );
-    return addResult.acknowledged ? true : false;
+    return addResult.modifiedCount > 0;
   } catch (err) {
     throw new Error("Failed to add task");
   }
 }
-
-// const username = 'xujia';
-// const testTask = {
-//   name: 'Test Task',
-//   notes: ['Test note 2'],
-//   deadline: new Date('2024-06-30'),
-// };
-
-// addTask(username, testTask)
-//   .then((updatedUser) => {
-//     console.log('Updated User:', updatedUser);
-//   })
-//   .catch((err) => {
-//     console.error('Error:', err);
-//   });
 
 // delete task
 async function deleteTask(username, taskId) {
@@ -66,28 +50,31 @@ async function deleteTask(username, taskId) {
       { $unset: { [`tasks.${taskId}`]: "" } }
     );
 
-    return deleteResult.acknowledged ? true : false;
+    console.log("deleted:", deleteResult);
+
+    return deleteResult.modifiedCount > 0;
   } catch (err) {
     throw new Error("Failed to delete task");
   }
 }
 
 // update task. Only update task name, leave notes name to notes apis
-async function updateTask(username, taskId, newName) {
+async function updateTask({ username, taskId, newName }) {
   try {
     const updateResult = await User.updateOne(
       { username, [`tasks.${taskId}`]: { $exists: true } },
       { $set: { [`tasks.${taskId}.name`]: newName } }
     );
-    return updateResult.acknowledged ? true : false;
+    return updateResult.modifiedCount > 0;
   } catch (err) {
     throw new Error("Failed to update task");
   }
 }
 
+// Notes
 async function getNotes({ username, taskId }) {
   try {
-    const task = await getTask({ username, taskId });
+    const task = await getOneTask({ username, taskId });
     const notes = task ? task.notes : null;
     return notes;
   } catch (err) {
@@ -96,39 +83,26 @@ async function getNotes({ username, taskId }) {
   }
 }
 
-// const taskId = "d0d8a380-c9db-4674-a49e-1c7315c3e29e";
-
-// // console.log(getNotes({username, taskId}));
-
-// getNotes({ username, taskId })
-//   .then((data) => {
-//     console.log(data);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-
 async function addNote({ username, taskId, newNote }) {
   try {
-    const task = await getTask({ username, taskId });
-    const notes = task ? task.notes : null;
-
-    // notes is a map object
-
-    const noteId = uuid();
-    const addResult = await User.updateMany(
-      { username },
-      { $set: { [`tasks.${taskId} `]: { notes: newNote } } } // wrong here
+    const addResult = await User.updateOne(
+      { username, [`tasks.${taskId}`]: { $exists: true } },
+      { $push: { [`tasks.${taskId}.notes`]: newNote } }
     );
-    return addResult.acknowledged ? true : false;
+
+    console.log(addResult)
+
+    return addResult.modifiedCount > 0;
   } catch (err) {
     console.log(err);
     throw new Error("Failed to add task");
   }
 }
 
-const newNote = "note 3";
-// addNote({username, taskId, newNote})
+const testUser = "xujia"
+const testTaskId = "66372144d443cd794dd284e8"
+const newNote = "note3"
+
 
 async function deleteNote({ username, taskId, noteId }) {}
 

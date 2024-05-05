@@ -19,17 +19,17 @@ function TaskList({ tasks, onDeleteTask, onUpdateTask }) {
         {Object.values(tasks)
           .reverse()
           .map((task) => (
-            <li className="task-item" key={task.id}>
-              <Link to={`/${task.id}`}>
+            <li className="task-item" key={task._id}>
+              <Link to={`/${task._id}`}>
                 <p className="task-name">{task.name}</p>
               </Link>
               {/* <p>Deadline: {task.deadline.slice(0, 10)}</p> */}
-              <button className="button-edit" onClick={() => handleEdit(task.id)}>
+              <button className="button-edit" onClick={() => handleEdit(task._id)}>
                 Edit
               </button>
               <button
                 className="button-delete"
-                onClick={() => handleDelete(task.id)}
+                onClick={() => handleDelete(task._id)}
               >
                 Delete
               </button>

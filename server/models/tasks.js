@@ -18,7 +18,7 @@ async function getTask({ username, taskId }) {
   try {
     const userData = await User.findOne({ username });
     const task = userData.tasks[taskId];
-    console.log("In getTask:", task)
+    console.log("In getTask:", task);
     return task;
   } catch (err) {
     console.log(err);
@@ -26,81 +26,37 @@ async function getTask({ username, taskId }) {
   }
 }
 
-// // add task
-// async function addTask(username, newTask) {
-//   const taskId = uuid();
-//   try {
-//     const taskData = {
-//       id: taskId,
-//       ...newTask
-//     }
-//     // const createdTask = await Task.create(taskData);
-//     const addResult = await User.updateOne(
-//       { username },
-//       { $set: { [`tasks.${taskId}`]: createdTask } }
-//     );
-//     return addResult.acknowledged ? true : false;
-//   } catch (err) {
-//     throw new Error("Failed to add task");
-//   }
-// }
-
-// async function addTask(username, newTask) {
-//   try {
-//     // Create a new task instance
-//     const taskData = new Task(newTask);
-
-//     // Find the user and embed the new task
-//     const updatedUser = await User.updateOne(
-//       { username },
-//       { $set: { [`tasks.${taskData._id}`]: taskData } },
-//     );
-
-//     // Return the updated user document
-//     return updatedUser;
-//   } catch (err) {
-//     throw new Error("Failed to add task");
-//   }
-// }
-
-
+// add task
 async function addTask(username, newTask) {
+  const taskData = {
+    ...newTask,
+  };
   try {
-    // Create a new task instance
-    const taskData = new Task(newTask);
-
-    // Find the user and embed the new task
-    const updatedUser = await User.findOneAndUpdate(
+    const createdTask = new Task(taskData);
+    const addResult = await User.updateOne(
       { username },
-      { $set: { [`tasks.${taskData._id}`]: taskData } },
-      { new: true }
+      { $set: { [`tasks.${createdTask._id}`]: createdTask } }
     );
-
-    // Return the updated user document
-    return updatedUser;
+    return addResult.acknowledged ? true : false;
   } catch (err) {
-    throw new Error('Failed to add task');
+    throw new Error("Failed to add task");
   }
 }
 
-const username = 'xujia';
-const testTask = {
-  name: 'Test Task',
-  notes: ['This is a test note'],
-  deadline: new Date('2023-06-30'),
-};
+// const username = 'xujia';
+// const testTask = {
+//   name: 'Test Task',
+//   notes: ['Test note 2'],
+//   deadline: new Date('2024-06-30'),
+// };
 
-addTask(username, testTask)
-  .then((updatedUser) => {
-    console.log('Updated User:', updatedUser);
-  })
-  .catch((err) => {
-    console.error('Error:', err);
-  });
-
-
-
-
+// addTask(username, testTask)
+//   .then((updatedUser) => {
+//     console.log('Updated User:', updatedUser);
+//   })
+//   .catch((err) => {
+//     console.error('Error:', err);
+//   });
 
 // delete task
 async function deleteTask(username, taskId) {
@@ -166,14 +122,13 @@ async function addNote({ username, taskId, newNote }) {
     );
     return addResult.acknowledged ? true : false;
   } catch (err) {
-    console.log(err)
+    console.log(err);
     throw new Error("Failed to add task");
   }
 }
 
-const newNote = "note 3"
+const newNote = "note 3";
 // addNote({username, taskId, newNote})
-
 
 async function deleteNote({ username, taskId, noteId }) {}
 

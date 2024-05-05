@@ -11,12 +11,11 @@ const taskSchema = new Schema({
     required: true,
   },
   notes: {
-    type: Map,
-    default: {},
+    type: [String],
+    default: [],
   },
   date: {
     type: Date,
-    require: true,
     default: Date.now,
   },
   deadline: {

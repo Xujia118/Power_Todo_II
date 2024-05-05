@@ -8,7 +8,7 @@ const userSchema = new Schema ({
     required: true,
   },
   tasks: {
-    type: Map,
+    type: Object,
     of: Task.schema,
     default: {},
   },

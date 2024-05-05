@@ -89,9 +89,6 @@ async function addNote({ username, taskId, newNote }) {
       { username, [`tasks.${taskId}`]: { $exists: true } },
       { $push: { [`tasks.${taskId}.notes`]: newNote } }
     );
-
-    console.log(addResult)
-
     return addResult.modifiedCount > 0;
   } catch (err) {
     console.log(err);
@@ -99,14 +96,71 @@ async function addNote({ username, taskId, newNote }) {
   }
 }
 
-const testUser = "xujia"
-const testTaskId = "66372144d443cd794dd284e8"
-const newNote = "note3"
+async function deleteNote({ username, taskId, noteIndex }) {
+  try {
+    const user = await User.findOne({ username });
 
+    if (
+      !user ||
+      !user.tasks[taskId] ||
+      !user.tasks[taskId].notes ||
+      noteIndex >= user.tasks[taskId].notes.length
+    ) {
+      return false;
+    }
 
-async function deleteNote({ username, taskId, noteId }) {}
+    const updatedNotes = user.tasks[taskId].notes.filter(
+      (note, index) => index !== noteIndex
+    );
 
-async function updateNote({ username, taskId, noteId, updatedNote }) {}
+    const deleteResult = await User.updateOne(
+      { username, [`tasks.${taskId}`]: { $exists: true } },
+      { $set: { [`tasks.${taskId}.notes`]: updatedNotes } }
+    );
+
+    return deleteResult.modifiedCount > 0;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to delete task");
+  }
+}
+
+// const username = "xujia";
+// const taskId = "66372144d443cd794dd284e8";
+// const noteIndex = 0;
+// const updatedNote = "updated note";
+
+// updateNote({ username, taskId, noteIndex, updatedNote });
+
+async function updateNote({ username, taskId, noteIndex, updatedNote }) {
+  try {
+    const user = await User.findOne({ username });
+
+    if (
+      !user ||
+      !user.tasks[taskId] ||
+      !user.tasks[taskId].notes ||
+      noteIndex >= user.tasks[taskId].notes.length
+    ) {
+      return false;
+    }
+
+    const updatedNotes = [...user.tasks[taskId].notes];
+    updatedNotes[noteIndex] = updatedNote;
+
+    const updateResult = await User.updateOne(
+      { username, [`tasks.${taskId}`]: { $exists: true } },
+      { $set: { [`tasks.${taskId}.notes`]: updatedNotes } }
+    );
+
+    console.log(updateResult);
+
+    return updateResult.modifiedCount > 0;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to add task");
+  }
+}
 
 module.exports = {
   getTasks,

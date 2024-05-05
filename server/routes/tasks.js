@@ -35,15 +35,12 @@ router.post("/add", async (req, res) => {
 
   const { newTask } = req.body;
 
-  console.log("created:", newTask)
-
-
   try {
-    const updateResult = tasks.addTask(username, newTask);
-    if (updateResult) {
-      return res.status(201).json({ message: "Update successful" });
+    const addResult = tasks.addTask(username, newTask);
+    if (addResult) {
+      return res.status(201).json({ message: "Add successful" });
     }
-    res.status(400).json({ message: "Update failed" });
+    res.status(400).json({ message: "Add failed" });
   } catch (err) {
     console.log(err);
   }
@@ -57,20 +54,16 @@ router.delete("/:taskId", async (req, res) => {
   }
  
   const { taskId } = req.params;
-  console.log(taskId);
 
   try {
-    const deleteResult = await User.updateOne(
-      { username },
-      { $unset: { [`tasks.${taskId}`]: "" } }
-    );
-
+    const deleteResult = tasks.deleteTask(username, taskId);
     if (deleteResult) {
-      return res.status(204).json({ message: "Delete successful" });
+      res.status(200).json({ message: "Delete successful" });
+      return;
     }
-
     res.status(404).json({ message: "Task not found" });
   } catch (err) {
+    console.log(err);
     throw new Error("Failed to delete task");
   }
 });

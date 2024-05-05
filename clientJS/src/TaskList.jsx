@@ -4,8 +4,6 @@ import "./TaskList.css";
 
 function TaskList({ tasks, onDeleteTask, onUpdateTask }) {
   function handleDelete(taskId) {
-    console.log("clicked")
-    console.log(taskId)
     onDeleteTask(taskId);
   }
 

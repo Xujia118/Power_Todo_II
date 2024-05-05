@@ -15,23 +15,15 @@ async function getUserTasks(username) {
 async function addTask(username, newTask) {
   try {    
     const taskId = uuid();
-    const updateResult = await User.updateOne(
+    const addResult = await User.updateOne(
       { username },
       { $set: { [`tasks.${taskId}`]: {id:taskId, ...newTask} } }
     );
-
-    return updateResult.modifiedCount ? true : false;
+    return addResult.acknowledged ? true : false;
   } catch (err) {
     throw new Error("Failed to add task");
   }
 }
-
-// const testUser = 'xujia'
-// const testTask = {
-//   name: 'test task in server code',
-// }
-
-// addTask(testUser, testTask)
 
 // delete task
 async function deleteTask(username, taskId) {
@@ -41,16 +33,11 @@ async function deleteTask(username, taskId) {
       { $unset: { [`tasks.${taskId}`]: "" } }
     );
 
-    return deleteResult.modifiedCount ? true : false;
+    return deleteResult.acknowledged ? true : false;
   } catch (err) {
     throw new Error("Failed to delete task");
   }
 }
-
-const taskId = "6636b6fe9d63f6bed4efee54";
-// deleteTask(testUser, taskId)
-
-
 
 // update task. Only update task name, leave notes name to notes apis
 async function updateTask(username, taskId, newName) {

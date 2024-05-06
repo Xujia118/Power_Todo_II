@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { fetchAddNote, fetchNotes } from "./services";
+import { fetchAddNote, fetchDeleteNote, fetchNotes } from "./services";
 
 function TaskDetail({
   notes,
@@ -11,21 +11,37 @@ function TaskDetail({
   onUpdateNote,
 }) {
   const { taskId } = useParams();
-  const [newNote, setNewNote] = useState("");
+  const [note, setNote] = useState("");
 
   function handleClick() {
-    onFetchNotes(taskId)
+    onFetchNotes(taskId);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    fetchAddNote({ taskId, newNote })
+    fetchAddNote(taskId, note)
       .then((data) => {
         console.log(data);
       })
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  function handleDelete(noteIndex) {
+    console.log("index:", noteIndex);
+    fetchDeleteNote(taskId, noteIndex)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function handleEdit(index) {
+    console.log(index);
+    // TODO
   }
 
   return (
@@ -38,6 +54,20 @@ function TaskDetail({
         {notes.map((note, index) => (
           <li key={index}>
             <span>{note}</span>
+            <button
+              className="button-edit"
+              type="button"
+              onClick={() => handleEdit(index)}
+            >
+              Edit
+            </button>
+            <button
+              className="button-delete"
+              type="button"
+              onClick={() => handleDelete(index)}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>
@@ -46,7 +76,7 @@ function TaskDetail({
         <input
           type="text"
           placeholder="Add Note..."
-          onChange={(e) => setNewNote(e.target.value)}
+          onChange={(e) => setNote(e.target.value)}
         />
         <button className="button-add-note" type="submit">
           Add Note

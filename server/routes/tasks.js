@@ -103,7 +103,7 @@ router.get(`/:taskId/notes`, async (req, res) => {
 
   try {
     const allNotes = await tasks.getNotes({ username, taskId });
-    if (allNotes.length > 0) {
+    if (Object.keys(allNotes).length > 0) {
       return res.json({ allNotes });
     }
     return res.status(404).json({ message: "notes not found" });
@@ -136,13 +136,14 @@ router.post(`/:taskId/notes`, async (req, res) => {
 });
 
 // Delete a note
-router.delete(`/:taskId/notes/:noteId`, async (req, res) => {
+router.delete(`/:taskId/notes`, async (req, res) => {
   const username = authenticate(req, res);
   if (!username) {
     return;
   }
 
-  const { taskId, noteId } = req.params;
+  const { taskId } = req.params;
+  const { noteId } = req.body
  
   try {
     const deleteResult = tasks.deleteNote({ username, taskId, noteId});
@@ -157,13 +158,14 @@ router.delete(`/:taskId/notes/:noteId`, async (req, res) => {
 });
 
 // Update a note
-router.patch(`/:taskId/notes/:noteId`, async (req, res) => {
+router.patch(`/:taskId/notes`, async (req, res) => {
   const username = authenticate(req, res);
   if (!username) {
     return;
   }
 
-  const { taskId, noteId } = req.params;
+  const { taskId } = req.params;
+  const { noteId } = req.body;
 
   try {
     const updateResult = tasks.addNote({ username, taskId, noteId, updatedNote });

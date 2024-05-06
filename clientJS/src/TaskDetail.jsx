@@ -28,9 +28,9 @@ function TaskDetail({
       });
   }
 
-  function handleDelete(noteIndex) {
-    console.log("index:", noteIndex);
-    fetchDeleteNote(taskId, noteIndex)
+  function handleDelete(noteId) {
+    console.log("id:", noteId);
+    fetchDeleteNote(taskId, noteId)
       .then((data) => {
         console.log(data);
       })
@@ -57,20 +57,21 @@ function TaskDetail({
       </button>
 
       <ul>
-        {notes.map((note, index) => (
-          <li key={index}>
-            <span>{note}</span>
+        {Object.values(notes).map(note => (
+          <li key={note._id}>
+            <span>{note.text}</span>
+            <span>{note.done}</span>
             <button
               className="button-edit"
               type="button"
-              onClick={() => handleEdit(index)}
+              onClick={() => handleEdit(note._id)}
             >
               Edit
             </button>
             <button
               className="button-delete"
               type="button"
-              onClick={() => handleDelete(index)}
+              onClick={() => handleDelete(note._id)}
             >
               Delete
             </button>

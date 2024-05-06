@@ -89,9 +89,6 @@ router.patch("/:taskId", async (req, res) => {
   }
 });
 
-
-// I don't know if we need notes apis, b/c all we do is updating tasks
-// So update Task api could do
 // Get all notes
 router.get(`/:taskId/notes`, async (req, res) => {
   const username = authenticate(req, res);
@@ -103,10 +100,7 @@ router.get(`/:taskId/notes`, async (req, res) => {
 
   try {
     const allNotes = await tasks.getNotes({ username, taskId });
-    if (Object.keys(allNotes).length > 0) {
-      return res.json({ allNotes });
-    }
-    return res.status(404).json({ message: "notes not found" });
+    return res.json({ allNotes: allNotes || {} });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "Internal server error" });
@@ -143,10 +137,10 @@ router.delete(`/:taskId/notes`, async (req, res) => {
   }
 
   const { taskId } = req.params;
-  const { noteId } = req.body
- 
+  const { noteId } = req.body;
+
   try {
-    const deleteResult = tasks.deleteNote({ username, taskId, noteId});
+    const deleteResult = tasks.deleteNote({ username, taskId, noteId });
     if (deleteResult) {
       return res.json({ message: "Delete successful" });
     }
@@ -168,7 +162,12 @@ router.patch(`/:taskId/notes`, async (req, res) => {
   const { noteId } = req.body;
 
   try {
-    const updateResult = tasks.addNote({ username, taskId, noteId, updatedNote });
+    const updateResult = tasks.addNote({
+      username,
+      taskId,
+      noteId,
+      updatedNote,
+    });
     if (updateResult) {
       return res.json({ message: "Update successful" });
     }
@@ -178,6 +177,5 @@ router.patch(`/:taskId/notes`, async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 });
-
 
 module.exports = router;

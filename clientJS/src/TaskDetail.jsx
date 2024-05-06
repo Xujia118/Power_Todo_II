@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { fetchAddNote, fetchDeleteNote, fetchNotes } from "./services";
@@ -12,10 +12,6 @@ function TaskDetail({
 }) {
   const { taskId } = useParams();
   const [note, setNote] = useState("");
-
-  function handleClick() {
-    onFetchNotes(taskId);
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -39,9 +35,9 @@ function TaskDetail({
       });
   }
 
-  function handleEdit(index) {
-    console.log("index:", noteIndex);
-    fetchDeleteNote(taskId, noteIndex, note)
+  function handleEdit(noteId) {
+    console.log("id:", noteId);
+    fetchDeleteNote(taskId, noteId, note)
       .then((data) => {
         console.log(data);
       })
@@ -50,11 +46,12 @@ function TaskDetail({
       });
   }
 
+  useEffect(() => {
+    onFetchNotes(taskId)
+  }, [taskId])
+
   return (
     <>
-      <button className="" onClick={handleClick}>
-        GET Notes
-      </button>
 
       <ul>
         {Object.values(notes).map(note => (

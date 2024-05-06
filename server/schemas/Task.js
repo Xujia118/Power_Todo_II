@@ -9,7 +9,7 @@ const noteSchema = new Schema({
 const taskSchema = new Schema({
   id: { type: String, required: true },
   name: { type: String, required: true },
-  notes: [noteSchema],
+  notes: {noteSchema},
   date: { type: Date, default: Date.now },
   deadline: { type: Date },
   done: { type: Boolean, default: false },

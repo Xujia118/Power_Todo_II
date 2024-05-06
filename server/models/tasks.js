@@ -147,8 +147,6 @@ async function updateNote({ username, taskId, noteId, updatedNote }) {
       { $set: { [`tasks.${taskId}.notes.${noteId}.text`]: updatedNote } }
     );
 
-    console.log(updateResult);
-
     return updateResult.modifiedCount > 0;
   } catch (err) {
     console.log(err);

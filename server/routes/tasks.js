@@ -136,17 +136,16 @@ router.post(`/:taskId/notes`, async (req, res) => {
 });
 
 // Delete a note
-router.delete(`/:taskId/notes`, async (req, res) => {
+router.delete(`/:taskId/notes/:noteId`, async (req, res) => {
   const username = authenticate(req, res);
   if (!username) {
     return;
   }
 
-  const { taskId } = req.params;
-  const { noteIndex } = req.body;
+  const { taskId, noteId } = req.params;
  
   try {
-    const deleteResult = tasks.deleteNote({ username, taskId, noteIndex});
+    const deleteResult = tasks.deleteNote({ username, taskId, noteId});
     if (deleteResult) {
       return res.json({ message: "Delete successful" });
     }
@@ -158,17 +157,16 @@ router.delete(`/:taskId/notes`, async (req, res) => {
 });
 
 // Update a note
-router.patch(`/:taskId/notes`, async (req, res) => {
+router.patch(`/:taskId/notes/:noteId`, async (req, res) => {
   const username = authenticate(req, res);
   if (!username) {
     return;
   }
 
-  const { taskId } = req.params;
-  const { updatedNote, noteIndex } = req.body;
+  const { taskId, noteId } = req.params;
 
   try {
-    const updateResult = tasks.addNote({ username, taskId, noteIndex, updatedNote });
+    const updateResult = tasks.addNote({ username, taskId, noteId, updatedNote });
     if (updateResult) {
       return res.json({ message: "Update successful" });
     }

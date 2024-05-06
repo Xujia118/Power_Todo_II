@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const uuid = require("uuid").v4;
+const { ObjectId } = require("mongoose").Types;
 
 const User = require("../schemas/User");
 const Task = require("../schemas/Task");
@@ -85,9 +84,18 @@ async function getNotes({ username, taskId }) {
 
 async function addNote({ username, taskId, newNote }) {
   try {
+    const noteId = new ObjectId();
     const addResult = await User.updateOne(
       { username, [`tasks.${taskId}`]: { $exists: true } },
-      { $push: { [`tasks.${taskId}.notes`]: newNote } }
+      {
+        $set: {
+          [`tasks.${taskId}.notes.${noteId}`]: {
+            _id: noteId,
+            text: newNote,
+            done: false,
+          },
+        },
+      }
     );
     return addResult.modifiedCount > 0;
   } catch (err) {
@@ -96,7 +104,7 @@ async function addNote({ username, taskId, newNote }) {
   }
 }
 
-async function deleteNote({ username, taskId, noteIndex }) {
+async function deleteNote({ username, taskId, noteId }) {
   try {
     const user = await User.findOne({ username });
 
@@ -104,18 +112,14 @@ async function deleteNote({ username, taskId, noteIndex }) {
       !user ||
       !user.tasks[taskId] ||
       !user.tasks[taskId].notes ||
-      noteIndex >= user.tasks[taskId].notes.length
+      !user.tasks[taskId].notes[noteId]
     ) {
       return false;
     }
 
-    const updatedNotes = user.tasks[taskId].notes.filter(
-      (note, index) => index !== noteIndex
-    );
-
     const deleteResult = await User.updateOne(
       { username, [`tasks.${taskId}`]: { $exists: true } },
-      { $set: { [`tasks.${taskId}.notes`]: updatedNotes } }
+      { $unset: { [`tasks.${taskId}.notes.${noteId}`]: "" } }
     );
 
     return deleteResult.modifiedCount > 0;
@@ -125,14 +129,7 @@ async function deleteNote({ username, taskId, noteIndex }) {
   }
 }
 
-// const username = "xujia";
-// const taskId = "66372144d443cd794dd284e8";
-// const noteIndex = 0;
-// const updatedNote = "updated note";
-
-// updateNote({ username, taskId, noteIndex, updatedNote });
-
-async function updateNote({ username, taskId, noteIndex, updatedNote }) {
+async function updateNote({ username, taskId, noteId, updatedNote }) {
   try {
     const user = await User.findOne({ username });
 
@@ -140,17 +137,14 @@ async function updateNote({ username, taskId, noteIndex, updatedNote }) {
       !user ||
       !user.tasks[taskId] ||
       !user.tasks[taskId].notes ||
-      noteIndex >= user.tasks[taskId].notes.length
+      !user.tasks[taskId].notes[noteId]
     ) {
       return false;
     }
 
-    const updatedNotes = [...user.tasks[taskId].notes];
-    updatedNotes[noteIndex] = updatedNote;
-
     const updateResult = await User.updateOne(
       { username, [`tasks.${taskId}`]: { $exists: true } },
-      { $set: { [`tasks.${taskId}.notes`]: updatedNotes } }
+      { $set: { [`tasks.${taskId}.notes.${noteId}.text`]: updatedNote } }
     );
 
     console.log(updateResult);

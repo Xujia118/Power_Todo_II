@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { fetchAddNote, fetchDeleteNote, fetchNotes } from "./services";
-
 function TaskDetail({
   notes,
   onFetchNotes,
@@ -11,50 +9,30 @@ function TaskDetail({
   onUpdateNote,
 }) {
   const { taskId } = useParams();
-  const [note, setNote] = useState("");
+  const [newNote, setNewNote] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
-    fetchAddNote(taskId, note)
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    onAddNote(taskId, newNote)
+    setNewNote("");
   }
 
   function handleDelete(noteId) {
-    console.log("id:", noteId);
-    fetchDeleteNote(taskId, noteId)
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    onDeleteNote(taskId, noteId)
   }
 
   function handleEdit(noteId) {
-    console.log("id:", noteId);
-    fetchDeleteNote(taskId, noteId, note)
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    onUpdateNote(taskId, noteId, newNote)
   }
 
   useEffect(() => {
-    onFetchNotes(taskId)
-  }, [taskId])
+    onFetchNotes(taskId);
+  }, [taskId]);
 
   return (
     <>
-
       <ul>
-        {Object.values(notes).map(note => (
+        {Object.values(notes).map((note) => (
           <li key={note._id}>
             <span>{note.text}</span>
             <span>{note.done}</span>
@@ -79,8 +57,8 @@ function TaskDetail({
       <form className="form-add-note" onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Add Note..."
-          onChange={(e) => setNote(e.target.value)}
+          value={newNote}
+          onChange={(e) => setNewNote(e.target.value)}
         />
         <button className="button-add-note" type="submit">
           Add Note

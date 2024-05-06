@@ -159,7 +159,7 @@ router.patch(`/:taskId/notes`, async (req, res) => {
   }
 
   const { taskId } = req.params;
-  const { noteId } = req.body;
+  const { noteId, updatedNote } = req.body;
 
   try {
     const updateResult = tasks.addNote({

@@ -6,7 +6,7 @@ export const intialState = {
   username: "",
   loginStatus: LOGIN_STATUS.NOT_LOGGED_IN,
   taskList: {},
-  noteList: [],
+  noteList: {},
 };
 
 function reducer(state, action) {

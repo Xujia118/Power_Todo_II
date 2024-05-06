@@ -19,10 +19,10 @@ import {
 import FormLogin from "./FormLogin";
 import TaskList from "./TaskList";
 import TaskDetail from "./TaskDetail";
-
-import "./App.css";
 import Header from "./Header";
 import AddTask from "./AddTask";
+
+import "./App.css";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, intialState);

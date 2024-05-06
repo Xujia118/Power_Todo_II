@@ -21,7 +21,7 @@ function AddTask({ onAddTask }) {
   function handleSubmit(e) {
     e.preventDefault();
     onAddTask(newTask);
-    navigate("/")
+    navigate("/") // To verify...
   }
   return (
     <>

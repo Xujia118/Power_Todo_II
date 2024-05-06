@@ -10,6 +10,10 @@ import {
   onAddTask,
   onDeleteTask,
   onUpdateTask,
+  onFetchNotes,
+  onAddNote,
+  onDeleteNote,
+  onUpdateNote,
 } from "./utils";
 
 import FormLogin from "./FormLogin";
@@ -52,7 +56,15 @@ function App() {
               ></Route>
               <Route
                 path="/:taskId"
-                element={<TaskDetail notes={state.noteList} />}
+                element={
+                  <TaskDetail
+                    notes={state.noteList}
+                    onFetchNotes={onFetchNotes(dispatch)}
+                    onAddNote={onAddNote(dispatch)}
+                    onDeleteNote={onDeleteNote(dispatch)}
+                    onUpdateNote={onUpdateNote(dispatch)}
+                  />
+                }
               ></Route>
               <Route
                 path="/add"

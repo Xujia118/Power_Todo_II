@@ -8,6 +8,10 @@ import {
   fetchAddTask,
   fetchDeleteTask,
   fetchUpdateTask,
+  fetchNotes,
+  fetchAddNote,
+  fetchDeleteNote,
+  fetchUpdateNote,
 } from "./services";
 
 // Sessions
@@ -67,7 +71,6 @@ export function onFetchTasks(dispatch) {
 // For add, update and delete, DB returns a message success or not
 // After each operation, We just need to load task list again
 // This way, our task list is always updated with DB
-
 export function onAddTask(dispatch) {
   return function (newTask) {
     fetchAddTask(newTask)
@@ -118,4 +121,64 @@ export function onUpdateTask(dispatch) {
 }
 
 // Notes
-// export function on
+export function onFetchNotes(dispatch) {
+  return function (taskId) {
+    fetchNotes(taskId)
+      .then((data) => {
+        dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.allNotes })
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+}
+
+export function onAddNote(dispatch) {
+  return function (taskId) {
+    fetchAddNote({taskId, newNote})
+      .then(() => {
+        dispatch({ type: ACTIONS.ADD_NOTE })
+        return fetchNotes()
+      })
+      .then(data => {
+        dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.allNotes });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+}
+
+export function onDeleteNote(dispatch) {
+  return function (taskId) {
+    fetchDeleteNote(taskId)
+      .then(() => {
+        dispatch({ type: ACTIONS.DELETE_NOTE });
+        return fetchNotes();
+      })
+      .then((data) => {
+        dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.allNotes });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+}
+
+export function onUpdateNote(dispatch) {
+  return function (taskId) {
+    fetchUpdateNote(taskId)
+      .then(() => {
+        dispatch({ type: ACTIONS.UPDATE_NOTE });
+        return fetchNotes();
+      })
+      .then((data) => {
+        dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.allNotes });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+}
+
+

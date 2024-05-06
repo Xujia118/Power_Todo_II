@@ -70,7 +70,7 @@ export function fetchUpdateTask({ taskId, updatedTask }) {
 }
 
 // Notes
-export function fetchNotes({ taskId }) {
+export function fetchNotes(taskId) {
   const fetched = fetch(`/api/v1/tasks/${taskId}/notes`);
   return chainPromise(fetched);
 }
@@ -86,15 +86,15 @@ export function fetchAddNote({ taskId, newNote }) {
   return chainPromise(fetched);
 }
 
-export function fetchDeleteNote({ taskId, noteId }) {
-  const fetched = fetch(`/api/v1/tasks/${taskId}/notes/${noteId}`, {
+export function fetchDeleteNote({ taskId, noteIndex }) {
+  const fetched = fetch(`/api/v1/tasks/${taskId}/notes`, {
     mothod: "DELETE"
   });
   return chainPromise(fetched);
 }
 
-export function fetchUpdateNote({ taskId, noteId, updatedNote}) {
-  const fetched = fetch(`/api/v1/tasks/${taskId}/notes/${noteId}`, {
+export function fetchUpdateNote({ taskId, noteIndex, updatedNote}) {
+  const fetched = fetch(`/api/v1/tasks/${taskId}/notes`, {
     method: "PATCH",
     headers: {
       "content-type": "application/json",

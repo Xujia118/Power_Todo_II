@@ -89,17 +89,20 @@ router.patch("/:taskId", async (req, res) => {
   }
 });
 
+
+// I don't know if we need notes apis, b/c all we do is updating tasks
+// So update Task api could do
 // Get all notes
-router.get(`/tasks/:taskId/notes`, async (req, res) => {
+router.get(`/:taskId/notes`, async (req, res) => {
   const username = authenticate(req, res);
   if (!username) {
     return;
   }
-
+  
   const { taskId } = req.params;
 
   try {
-    const allNotes = tasks.getNotes({ username, taskId });
+    const allNotes = await tasks.getNotes({ username, taskId });
     if (allNotes.length > 0) {
       return res.json({ allNotes });
     }
@@ -111,7 +114,7 @@ router.get(`/tasks/:taskId/notes`, async (req, res) => {
 });
 
 // Add a note
-router.post(`/tasks/:taskId/notes`, async (req, res) => {
+router.post(`/:taskId/notes`, async (req, res) => {
   const username = authenticate(req, res);
   if (!username) {
     return;
@@ -133,7 +136,7 @@ router.post(`/tasks/:taskId/notes`, async (req, res) => {
 });
 
 // Delete a note
-router.delete(`/tasks/:taskId/notes/:noteId`, async (req, res) => {
+router.delete(`/:taskId/notes/:noteId`, async (req, res) => {
   const username = authenticate(req, res);
   if (!username) {
     return;
@@ -154,7 +157,7 @@ router.delete(`/tasks/:taskId/notes/:noteId`, async (req, res) => {
 });
 
 // Update a note
-router.patch(`/tasks/:taskId/notes/:noteId`, async (req, res) => {
+router.patch(`/:taskId/notes/:noteId`, async (req, res) => {
   const username = authenticate(req, res);
   if (!username) {
     return;

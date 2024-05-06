@@ -158,17 +158,17 @@ router.delete(`/:taskId/notes`, async (req, res) => {
 });
 
 // Update a note
-router.patch(`/:taskId/notes/:noteIndex`, async (req, res) => {
+router.patch(`/:taskId/notes`, async (req, res) => {
   const username = authenticate(req, res);
   if (!username) {
     return;
   }
 
-  const { taskId, noteIndex} = req.params;
-  const { updatedNote } = req.body;
+  const { taskId } = req.params;
+  const { updatedNote, noteIndex } = req.body;
 
   try {
-    const updateResult = tasks.addNote({ username, taskId, noteId, updatedNote });
+    const updateResult = tasks.addNote({ username, taskId, noteIndex, updatedNote });
     if (updateResult) {
       return res.json({ message: "Update successful" });
     }

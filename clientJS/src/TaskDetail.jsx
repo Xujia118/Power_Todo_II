@@ -40,8 +40,14 @@ function TaskDetail({
   }
 
   function handleEdit(index) {
-    console.log(index);
-    // TODO
+    console.log("index:", noteIndex);
+    fetchDeleteNote(taskId, noteIndex, note)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (

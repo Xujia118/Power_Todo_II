@@ -150,8 +150,8 @@ export function onAddNote(dispatch) {
 }
 
 export function onDeleteNote(dispatch) {
-  return function (taskId) {
-    fetchDeleteNote(taskId)
+  return function (taskId, noteIndex) {
+    fetchDeleteNote(taskId, noteIndex)
       .then(() => {
         dispatch({ type: ACTIONS.DELETE_NOTE });
         return fetchNotes();
@@ -166,8 +166,8 @@ export function onDeleteNote(dispatch) {
 }
 
 export function onUpdateNote(dispatch) {
-  return function (taskId) {
-    fetchUpdateNote(taskId)
+  return function (taskId, noteIndex) {
+    fetchUpdateNote(taskId, noteIndex)
       .then(() => {
         dispatch({ type: ACTIONS.UPDATE_NOTE });
         return fetchNotes();

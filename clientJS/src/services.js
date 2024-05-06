@@ -98,12 +98,12 @@ export function fetchDeleteNote(taskId, noteIndex) {
 }
 
 export function fetchUpdateNote(taskId, noteIndex, updatedNote) {
-  const fetched = fetch(`/api/v1/tasks/${taskId}`, {
+  const fetched = fetch(`/api/v1/tasks/${taskId}/notes`, {
     method: "PATCH",
     headers: {
       "content-type": "application/json",
     },
-    body: JSON.stringify({ updatedNote }),
+    body: JSON.stringify({ updatedNote, noteIndex }),
   });
   return chainPromise(fetched);
 }

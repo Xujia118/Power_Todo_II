@@ -11,10 +11,11 @@ function FormLogin({ onLogin }) {
   }
 
   return (
-    <div className="login-page">
+    <div className="login-container">
       <h1 className="main-logo">Power Todo</h1>
       <form className="form-login" onSubmit={handleSubmit}>
         <input
+        className="login-input"
           type="text"
           name="username"
           value={input}

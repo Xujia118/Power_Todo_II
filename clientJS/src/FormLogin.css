@@ -1,13 +1,26 @@
-.login-page {
+.login-container {
     margin: 5rem;
     margin-top: 10rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-logo {
+    font-size:3rem;
+    margin: 2rem;
+    color: var(--panel-color)
 }
 
 .form-login {
     margin: 2rem;
 }
 
-.main-logo {
-    margin: 2rem;
-    color: var(--panel-color)
+.login-input {
+    /* height: 2rem; */
+}
+
+.button-login {
+    /* height: 2rem; */
 }

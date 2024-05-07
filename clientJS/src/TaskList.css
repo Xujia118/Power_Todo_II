@@ -3,6 +3,10 @@
     grid-template-columns: repeat(12, 1fr);
 }
 
+.add-task-link {
+    grid-column: 7/8;
+}
+
 .task-menu {
     padding: 0;
     grid-column: span 12;
@@ -38,6 +42,10 @@
     cursor: pointer;
 }
 
+.button-container {
+    display: flex;
+    align-items: center;
+}
 
 @media (min-width: 44rem) {
     .modal {

@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
 
+import Delete from "../public/delete_24dp_FILL0_wght400_GRAD0_opsz24.svg";
+import View from "../public/visibility_24dp_FILL0_wght400_GRAD0_opsz24.svg";
+import Add from "../public/add_box_24dp_FILL0_wght400_GRAD0_opsz24.svg";
+
 import "./TaskList.css";
 
 function TaskList({ tasks, onDeleteTask, onUpdateTask }) {
@@ -13,7 +17,12 @@ function TaskList({ tasks, onDeleteTask, onUpdateTask }) {
 
   return (
     <>
-      <Link to={"/add"}>Add Task Icon</Link>
+      <div className="task-container">
+        <Link className="add-task-link" to={"/add"}>
+          <img src={Add} alt="add a new task" />
+        </Link>
+      </div>
+
       <div className="task-container">
         <ul className="task-menu">
           {Object.values(tasks)
@@ -29,13 +38,13 @@ function TaskList({ tasks, onDeleteTask, onUpdateTask }) {
                     className="button-edit"
                     onClick={() => handleEdit(task._id)}
                   >
-                    Edit
+                    <img src={View} alt="view task detail" />
                   </button>
                   <button
                     className="button-delete"
                     onClick={() => handleDelete(task._id)}
                   >
-                    Delete
+                    <img src={Delete} alt="delete" />
                   </button>
                 </div>
               </li>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function TaskDetail({
   notes,
@@ -19,6 +19,7 @@ function TaskDetail({
 
   function handleDelete(noteId) {
     onDeleteNote(taskId, noteId)
+    window.location.reload() // While LF a better solution...
   }
 
   function handleEdit(noteId) {
@@ -31,6 +32,17 @@ function TaskDetail({
 
   return (
     <>
+      <form className="form-add-note" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={newNote}
+          onChange={(e) => setNewNote(e.target.value)}
+        />
+        <button className="button-add-note" type="submit">
+          Add Note
+        </button>
+      </form>
+
       <ul>
         {Object.values(notes).map((note) => (
           <li key={note._id}>
@@ -53,17 +65,6 @@ function TaskDetail({
           </li>
         ))}
       </ul>
-
-      <form className="form-add-note" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={newNote}
-          onChange={(e) => setNewNote(e.target.value)}
-        />
-        <button className="button-add-note" type="submit">
-          Add Note
-        </button>
-      </form>
     </>
   );
 }

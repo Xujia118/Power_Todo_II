@@ -1,12 +1,18 @@
-import "./Header.css"
+import { Link } from "react-router-dom";
 
-function Header({ user, onLogout  }) {
+import "./Header.css";
+
+function Header({ user, onLogout }) {
+
   return (
     <header>
-      <button className="">Home icon</button>
+      <Link to={"/"}>
+        <button className="button-home">Home icon</button>
+      </Link>
+
       <div className="logo">Power Todo</div>
       <div className="control">
-        <span className='greeting'>Hello, {user}</span>
+        <span className="greeting">Hello, {user}</span>
         <button className="button-logout" type="button" onClick={onLogout}>
           Logout
         </button>
@@ -15,4 +21,4 @@ function Header({ user, onLogout  }) {
   );
 }
 
-export default Header
+export default Header;

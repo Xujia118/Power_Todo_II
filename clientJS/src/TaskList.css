@@ -24,6 +24,15 @@
     text-transform: capitalize;
 }
 
+.task-link {
+
+    text-decoration: none;
+}
+
+.task-name {
+    color: white;
+}
+
 .task-name:hover {
     /* text-decoration: underline; */
     cursor: pointer;

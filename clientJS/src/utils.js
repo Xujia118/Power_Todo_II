@@ -125,7 +125,7 @@ export function onFetchNotes(dispatch) {
   return function (taskId) {
     fetchNotes(taskId)
       .then((data) => {
-        dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.allNotes })
+        dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.allNotes });
       })
       .catch((err) => {
         console.log(err);
@@ -137,11 +137,10 @@ export function onAddNote(dispatch) {
   return function (taskId, newNote) {
     fetchAddNote(taskId, newNote)
       .then(() => {
-        dispatch({ type: ACTIONS.ADD_NOTE })
-        return fetchNotes(taskId)
+        dispatch({ type: ACTIONS.ADD_NOTE });
+        return fetchNotes(taskId);
       })
-      .then(data => {
-        console.log("got data", data)
+      .then((data) => {
         dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.allNotes });
       })
       .catch((err) => {
@@ -155,7 +154,7 @@ export function onDeleteNote(dispatch) {
     fetchDeleteNote(taskId, noteId)
       .then(() => {
         dispatch({ type: ACTIONS.DELETE_NOTE });
-        return fetchNotes();
+        return fetchNotes(taskId);
       })
       .then((data) => {
         dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.allNotes });
@@ -171,7 +170,7 @@ export function onUpdateNote(dispatch) {
     fetchUpdateNote(taskId, noteId)
       .then(() => {
         dispatch({ type: ACTIONS.UPDATE_NOTE });
-        return fetchNotes();
+        return fetchNotes(taskId);
       })
       .then((data) => {
         dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.allNotes });
@@ -181,5 +180,3 @@ export function onUpdateNote(dispatch) {
       });
   };
 }
-
-

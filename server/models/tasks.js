@@ -24,17 +24,13 @@ async function getOneTask({ username, taskId }) {
 }
 
 // add task
-async function addTask(username, newTask) {
-  const taskData = {
-    ...newTask,
-  };
+async function addTask(userId, newTask) {
   try {
-    const createdTask = new Task(taskData);
-    const addResult = await User.updateOne(
-      { username },
-      { $set: { [`tasks.${createdTask._id}`]: createdTask } }
-    );
-    return addResult.modifiedCount > 0;
+    newTask.userId = userId;
+    
+
+    const addTask = new Task(newTask);
+    return !!addTask._id;
   } catch (err) {
     throw new Error("Failed to add task");
   }

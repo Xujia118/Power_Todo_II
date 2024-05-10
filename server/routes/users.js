@@ -5,7 +5,7 @@ const router = express.Router();
 const { User } = require("../schema");
 const users = require("../models/users");
 const sessions = require("../models/sessions");
-const authenticate = require('./auth');
+const authenticate = require("./auth");
 
 // Routes
 router.get("/", (req, res) => {
@@ -16,13 +16,33 @@ router.get("/", (req, res) => {
   res.status(200).json({ username });
 });
 
+// Create user
 router.post("/", async (req, res) => {
-  const { username } = req.body;
+  const { username, password, email } = req.body;
+
+  try {
+    const userIsCreated = await users.createUser(username, password, email);
+
+    if (userIsCreated) {
+      return res.status(201).json({ message: "User created successfully" });
+    } else {
+      logger.error("User creation failed");
+      return res.status(400).json({ error: "Invalid request data" });
+    }
+  } catch (err) {
+    console.log("User creation failed with error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Login user
+router.post("/", async (req, res) => {
+  const { username, password } = req.body;
   const sid = sessions.addSession(username);
 
   try {
     // Prevent duplicate users
-    const userExists = await User.exists({username});
+    const userExists = await User.exists({ username });
     if (userExists) {
       res.cookie("sid", sid);
       return res.status(200).json({ username });

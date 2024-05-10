@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 // Import files
-const Task = require("../schemas/Task");
-const User = require("../schemas/User");
+const Task = require("../schema");
+const User = require("../schema");
 const users = require("../models/users");
 const tasks = require("../models/tasks");
 const authenticate = require("./auth");

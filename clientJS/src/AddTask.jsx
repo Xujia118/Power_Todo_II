@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import "./AddTask.css";
 
 function AddTask({ onAddTask }) {
-  const navigate = useNavigate()
-   
+  const navigate = useNavigate();
+
   const [newTask, setNewTask] = useState({
     name: "",
     deadline: "",
@@ -17,41 +17,44 @@ function AddTask({ onAddTask }) {
       [e.target.name]: e.target.value,
     }));
   }
-  
+
   function handleSubmit(e) {
     e.preventDefault();
     onAddTask(newTask);
-    navigate("/") // To verify...
+    navigate("/"); // To verify...
   }
   return (
-    <>
+    <div className="add-task-form-container">
       <form className="form-add-task" onSubmit={handleSubmit}>
         <div className="form-container">
-          <label htmlFor="">
-            Task Title:
-            <input
-              type="text"
-              name="name"
-              placeholder="Add task..."
-              onChange={handleChange}
-            />
-          </label>
+          <label htmlFor="task-title" />
+          Task Title:
+          <input
+            type="text"
+            id="task-title"
+            name="name"
+            onChange={handleChange}
+          />
         </div>
 
         <div className="form-container">
-          <label htmlFor="">
-            Task Deadline
-            <input type="date" name="deadline" onChange={handleChange} />
-          </label>
+          <label htmlFor="task-deadline" />
+          Task Deadline
+          <input
+            type="date"
+            id="task-deadline"
+            name="deadline"
+            onChange={handleChange}
+          />
         </div>
 
         <div className="button-container">
-          <button className="button-add-task" type="submit">
+          <button className="add-task" type="submit">
             Add Task
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 

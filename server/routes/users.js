@@ -2,11 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 // Import files
-const User = require("../schemas/User");
-const sessions = require("../models/sessions");
+const { User } = require("../schema");
 const users = require("../models/users");
+const sessions = require("../models/sessions");
 const authenticate = require('./auth');
 
+// Routes
 router.get("/", (req, res) => {
   const username = authenticate(req, res);
   if (!username) {
@@ -21,14 +22,13 @@ router.post("/", async (req, res) => {
 
   try {
     // Prevent duplicate users
-    const userExists = users.userExists(username);
+    const userExists = await User.exists({username});
     if (userExists) {
       res.cookie("sid", sid);
       return res.status(200).json({ username });
     }
 
     // Create new user
-    // Some checks
     if (!users.isValid(username)) {
       return res.status(401).json({ error: "required-username" });
     }

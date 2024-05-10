@@ -1,10 +1,3 @@
-const User = require("../schemas/User");
-
-async function userExists(username) {
-  const existingUser = await User.findOne({ username });
-  return existingUser;
-}
-
 function isValid(username) {
   let isValid = true;
   isValid = !!username && username.trim();
@@ -14,5 +7,4 @@ function isValid(username) {
 
 module.exports = {
   isValid,
-  userExists,
 };

@@ -1,7 +1,6 @@
 const { ObjectId } = require("mongoose").Types;
 
-const User = require("../schemas/User");
-const Task = require("../schemas/Task");
+const { User, Task, Note } = require("../schema");
 
 // Tasks
 async function getTasks(username) {
@@ -82,6 +81,7 @@ async function getNotes({ username, taskId }) {
   }
 }
 
+//
 async function addNote({ username, taskId, newNote }) {
   try {
     const noteId = new ObjectId();
@@ -103,6 +103,32 @@ async function addNote({ username, taskId, newNote }) {
     throw new Error("Failed to add task");
   }
 }
+
+// 参考以下代码
+// Assume you have a function to add a note to a task
+async function addNoteToTask(taskId, noteData) {
+  // Find the task by ID
+  const task = await Task.findById(taskId);
+
+  if (!task) {
+    throw new Error("Task not found");
+  }
+
+  // Check if the task already has 10 embedded notes
+  if (task.notes.length >= 10) {
+    // If it has 10 or more notes, add the new note as a reference
+    const newNote = await Note.create(noteData);
+    task.additionalNotes.push(newNote._id); // Add the reference to additionalNotes array
+  } else {
+    // If it has less than 10 notes, add the new note directly to the embedded notes array
+    task.notes.push(noteData);
+  }
+
+  // Save the updated task document
+  await task.save();
+}
+
+
 
 async function deleteNote({ username, taskId, noteId }) {
   try {

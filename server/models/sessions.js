@@ -1,19 +1,17 @@
 const uuid = require("uuid").v4;
 
-// We don't need to store sessions, because sid will be destroyed at logout
-
 const sessions = {};
 
-function addSession(username) {
+function addSession(userId) {
   const sid = uuid();
   sessions[sid] = {
-    username,
+    userId,
   };
   return sid;
 }
 
 function getSessionUser(sid) {
-    return sessions[sid]?.username;
+    return sessions[sid]?.userId;
 }
 
 function deleteSession(sid) {

@@ -9,16 +9,19 @@ const authenticate = require("./auth");
 
 // Routes
 router.get("/", (req, res) => {
-  const username = authenticate(req, res);
-  if (!username) {
+  const userId = authenticate(req, res);
+  if (!userId) {
     return;
   }
-  res.status(200).json({ username });
+  res.status(200).json({ userId });
 });
 
 // Create user
 router.post("/register", async (req, res) => {
-  const { newUser } = req.body; 
+  const { newUser } = req.body;
+
+
+  // TODO: add some checks here to control username and password
 
   try {
     const userIsCreated = await users.createUser(newUser);
@@ -37,28 +40,21 @@ router.post("/register", async (req, res) => {
 
 // Login user
 router.post("/", async (req, res) => {
-  const { username, password } = req.body;
-  const sid = sessions.addSession(username);
+  const { credentials } = req.body;
 
   try {
-    // Prevent duplicate users
-    const userExists = await User.exists({ username });
-    if (userExists) {
-      res.cookie("sid", sid);
-      return res.status(200).json({ username });
+    const userId = await users.loginUser(credentials);
+
+    if (userId === "Invalid username or password") {
+      return res.status(404).json({ message: "Invalid username or password" });
     }
 
-    // Create new user
-    if (!users.isValid(username)) {
-      return res.status(401).json({ error: "required-username" });
-    }
-    // Put other checks here like username not too long
-
-    const newUser = await User.create({ username });
+    const sid = sessions.addSession(userId);
     res.cookie("sid", sid);
-    res.status(201).json({ newUser });
+    res.status(200).json({ userId })
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.log(err);
+    throw err;
   }
 });
 

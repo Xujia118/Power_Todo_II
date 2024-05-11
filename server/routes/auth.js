@@ -3,14 +3,14 @@ const users = require("../models/users");
 
 function authenticate(req, res) {
   const sid = req.cookies.sid;
-  const username = sid ? sessions.getSessionUser(sid) : "";
+  const userId = sid ? sessions.getSessionUser(sid) : "";
 
-  if (!sid || !users.isValid(username)) {
+  if (!sid) {
     res.status(401).json({ error: "auth-missing" });
     return "";
   }
 
-  return username;
+  return userId;
 }
 
 module.exports = authenticate;

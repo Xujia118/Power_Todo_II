@@ -37,17 +37,34 @@ async function createUser(newUser) {
 }
 
 function hashPassword(password) {
-  const hashedPassword = crypto.createHash("sha256").digest("hex");
+  if (!password) {
+    console.log(first)("Password cannot be empty");
+  }
+
+  const hashedPassword = crypto
+    .createHash("sha256")
+    .update(password)
+    .digest("hex");
   return hashedPassword;
 }
 
 // Login: fetch userId, match it to sid
-async function loginUser(username, password) {
-  // compare hashword
-  const hashedPassword = crypto.createHash("sha256").digest("hex");
-
+async function loginUser(credentials) {
+  const username = credentials.username;
+  const password = credentials.password;
+  const hashedPassword = hashPassword(password);
   
-  
+  try {
+    // Find user in DB
+    const user = await User.findOne({ username, password: hashedPassword });
+    if (user) {
+      return user._id;
+    }
+    return "Invalid username or password";
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 }
 
 // Logout: clear sid

@@ -15,13 +15,13 @@ export function fetchSession() {
   return chainPromise(fetched);
 }
 
-export function fetchLogin(username) {
+export function fetchLogin(credentials) {
   const fetched = fetch("/api/v1/session", {
     method: "POST",
     headers: {
       "content-type": "application/json",
     },
-    body: JSON.stringify({ username }),
+    body: JSON.stringify({ credentials }),
   });
 
   return chainPromise(fetched);

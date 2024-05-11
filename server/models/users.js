@@ -1,5 +1,5 @@
 const { User } = require("../schema");
-const sha = require("js-sha256");
+const crypto = require("crypto");
 
 function isValid(username) {
   let isValid = true;
@@ -9,8 +9,12 @@ function isValid(username) {
 }
 
 // Sign up: create user
-async function createUser(username, password, email) {
+async function createUser(newUser) {
   // prevent duplicate
+  const username = newUser.username;
+  const email = newUser.email;
+  const password = newUser.password;
+
   const userExists = await User.exists({ $or: [{ username }, { email }] });
   console.log("User exists:", username);
   if (userExists) {
@@ -18,13 +22,13 @@ async function createUser(username, password, email) {
   }
 
   try {
-    const newUser = {
+    const createUser = {
       username,
-      password: sha(password),
+      password: hashPassword(password),
       email,
     };
 
-    const createResult = await User.create(newUser);
+    const createResult = await User.create(createUser);
     return !!createResult;
   } catch (err) {
     console.log(err);
@@ -32,8 +36,10 @@ async function createUser(username, password, email) {
   }
 }
 
-createUser('Alice', 'aliceinwonderland', 'alice@mail.com')
-
+function hashPassword(password) {
+  const hashedPassword = crypto.createHash("sha256").digest("hex");
+  return hashedPassword;
+}
 
 // Login: fetch userId, match it to sid
 async function loginUser(username) {

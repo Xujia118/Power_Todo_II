@@ -17,11 +17,11 @@ router.get("/", (req, res) => {
 });
 
 // Create user
-router.post("/", async (req, res) => {
-  const { username, password, email } = req.body;
+router.post("/register", async (req, res) => {
+  const { newUser } = req.body; 
 
   try {
-    const userIsCreated = await users.createUser(username, password, email);
+    const userIsCreated = await users.createUser(newUser);
 
     if (userIsCreated) {
       return res.status(201).json({ message: "User created successfully" });

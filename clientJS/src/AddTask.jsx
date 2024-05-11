@@ -32,7 +32,7 @@ function AddTask({ onAddTask }) {
           <input
             type="text"
             id="task-title"
-            name="name"
+            name="title"
             onChange={handleChange}
           />
         </div>

@@ -34,6 +34,17 @@ export function fetchLogout() {
   return chainPromise(fetched);
 }
 
+export function fetchRegister(newUser) {
+  const fetched = fetch("/api/v1/session/register", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({newUser}),
+  });
+  return chainPromise(fetched);
+}
+
 // Tasks
 export function fetchTasks() {
   const fetched = fetch("/api/v1/tasks");
@@ -90,9 +101,9 @@ export function fetchDeleteNote(taskId, noteId) {
   const fetched = fetch(`/api/v1/tasks/${taskId}/notes`, {
     method: "DELETE",
     headers: {
-      "content-type": "application/json"
+      "content-type": "application/json",
     },
-    body: JSON.stringify({ noteId })
+    body: JSON.stringify({ noteId }),
   });
   return chainPromise(fetched);
 }

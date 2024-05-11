@@ -42,8 +42,12 @@ function hashPassword(password) {
 }
 
 // Login: fetch userId, match it to sid
-async function loginUser(username) {
+async function loginUser(username, password) {
   // compare hashword
+  const hashedPassword = crypto.createHash("sha256").digest("hex");
+
+  
+  
 }
 
 // Logout: clear sid

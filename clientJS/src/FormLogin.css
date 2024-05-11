@@ -1,7 +1,4 @@
 .login-container {
-    margin: 5rem;
-    margin-top: 10rem;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,14 +10,24 @@
     color: var(--panel-color)
 }
 
-.form-login {
-    margin: 2rem;
+.login-register-switch {
+    margin-bottom: 2rem;
 }
 
-.login-input {
-    /* height: 2rem; */
+
+
+.form-wrapper { 
+    background-color:white;
+
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px 3px rgb(175, 175, 175);
+
+    width: 20rem;
+
+    padding: 3rem;
 }
 
-.button-login {
-    /* height: 2rem; */
+.switch-container {
+    display: flex;
+    justify-content:end
 }

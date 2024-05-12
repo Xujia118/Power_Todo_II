@@ -7,7 +7,7 @@ function AddTask({ onAddTask }) {
   const navigate = useNavigate();
 
   const [newTask, setNewTask] = useState({
-    name: "",
+    title: "",
     deadline: "",
   });
 

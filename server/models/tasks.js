@@ -3,18 +3,18 @@ const { ObjectId } = require("mongoose").Types;
 const { User, Task, Note } = require("../schema");
 
 // Tasks
-async function getTasks(username) {
+async function getTasks(userId) {
   try {
-    const userData = await User.findOne({ username });
+    const userData = await User.findOne({ _id: userId });
     return userData.tasks;
   } catch (err) {
     console.log(err);
   }
 }
 
-async function getOneTask({ username, taskId }) {
+async function getOneTask({ userId, taskId }) {
   try {
-    const userData = await User.findOne({ username });
+    const userData = await User.findOne({ _id: userId });
     const task = userData.tasks[taskId];
     return task;
   } catch (err) {
@@ -26,21 +26,31 @@ async function getOneTask({ username, taskId }) {
 // add task
 async function addTask(userId, newTask) {
   try {
-    newTask.userId = userId;
-    
+    const addTask = {
+      userId,
+      ...newTask,
+    };
 
-    const addTask = new Task(newTask);
-    return !!addTask._id;
+    const task = await Task.create(addTask);
+
+    // update user
+    const updateResult = await User.updateOne(
+      { _id: userId },
+      { $push: { tasks: task._id } }
+    );
+    
+    return !!updateResult.modifiedCount;
   } catch (err) {
-    throw new Error("Failed to add task");
+    console.log(err);
+    throw err;
   }
 }
 
 // delete task
-async function deleteTask(username, taskId) {
+async function deleteTask(userId, taskId) {
   try {
     const deleteResult = await User.updateOne(
-      { username },
+      { userId },
       { $unset: { [`tasks.${taskId}`]: "" } }
     );
 
@@ -53,10 +63,10 @@ async function deleteTask(username, taskId) {
 }
 
 // update task. Only update task name, leave notes name to notes apis
-async function updateTask({ username, taskId, newName }) {
+async function updateTask({ userId, taskId, newName }) {
   try {
     const updateResult = await User.updateOne(
-      { username, [`tasks.${taskId}`]: { $exists: true } },
+      { userId, [`tasks.${taskId}`]: { $exists: true } },
       { $set: { [`tasks.${taskId}.name`]: newName } }
     );
     return updateResult.modifiedCount > 0;
@@ -66,9 +76,9 @@ async function updateTask({ username, taskId, newName }) {
 }
 
 // Notes
-async function getNotes({ username, taskId }) {
+async function getNotes({ userId, taskId }) {
   try {
-    const task = await getOneTask({ username, taskId });
+    const task = await getOneTask({ userId, taskId });
     const notes = task ? task.notes : null;
     return notes;
   } catch (err) {
@@ -123,8 +133,6 @@ async function addNoteToTask(taskId, noteData) {
   // Save the updated task document
   await task.save();
 }
-
-
 
 async function deleteNote({ username, taskId, noteId }) {
   try {

@@ -8,15 +8,15 @@ const users = require("../models/users");
 const tasks = require("../models/tasks");
 const authenticate = require("./auth");
 
-// Get all tasks
+// Get all tasks of a user
 router.get("/", async (req, res) => {
-  const username = authenticate(req, res);
-  if (!username) {
+  const userId = authenticate(req, res);
+  if (!userId) {
     return;
   }
 
   try {
-    const allTasks = await tasks.getTasks(username);
+    const allTasks = await tasks.getTasks(userId);
     res.status(200).json({ allTasks });
   } catch (err) {
     res.status(404).json({ message: "tasks not found" });
@@ -25,19 +25,19 @@ router.get("/", async (req, res) => {
 
 // Add one task
 router.post("/add", async (req, res) => {
-  const username = authenticate(req, res);
-  if (!username) {
+  const userId = authenticate(req, res);
+  if (!userId) {
     return;
   }
 
   const { newTask } = req.body;
 
   try {
-    const addResult = tasks.addTask(username, newTask);
+    const addResult = await tasks.addTask(userId, newTask);
     if (addResult) {
-      return res.status(201).json({ message: "Add successful" });
+      return res.status(201).json({ message: "add-task-successful" });
     }
-    res.status(400).json({ message: "Add failed" });
+    res.status(400).json({ message: "add-task-failed" });
   } catch (err) {
     console.log(err);
   }

@@ -5,10 +5,24 @@ const { User, Task, Note } = require("../schema");
 // Tasks
 async function getTasks(userId) {
   try {
-    const userData = await User.findOne({ _id: userId });
-    return userData.tasks;
+    const query = await User.aggregate([
+      {
+        $match: { _id: userId },
+      },
+      {
+        $lookup: {
+          from: "tasks", 
+          localField: "tasks",
+          foreignField: "_id",
+          as: "taskList",
+        },
+      },
+    ]);
+
+    return query[0].taskList;
   } catch (err) {
     console.log(err);
+    throw err;
   }
 }
 
@@ -38,7 +52,7 @@ async function addTask(userId, newTask) {
       { _id: userId },
       { $push: { tasks: task._id } }
     );
-    
+
     return !!updateResult.modifiedCount;
   } catch (err) {
     console.log(err);

@@ -89,7 +89,7 @@ body.dark {
 }
 
 
-/* 
+
 [class^="button-"] {
     background: none;
     border: none;
@@ -100,4 +100,4 @@ body.dark {
 [class^="button-"]:hover {
     cursor: pointer;
     transform: scale(1.1);
-} */
+}

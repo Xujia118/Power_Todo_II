@@ -30,7 +30,7 @@ function TaskList({ tasks, onDeleteTask, onUpdateTask }) {
             .map((task) => (
               <li className="task-item" key={task._id}>
                 <Link className="task-link" to={`/${task._id}`}>
-                  <p className="task-name">{task.name}</p>
+                  <p className="task-name">{task.title}</p>
                 </Link>
                 {/* <p>Deadline: {task.deadline.slice(0, 10)}</p> */}
                 <div className="button-container">

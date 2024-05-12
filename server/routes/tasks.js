@@ -45,15 +45,15 @@ router.post("/add", async (req, res) => {
 
 // Delete a task
 router.delete("/:taskId", async (req, res) => {
-  const username = authenticate(req, res);
-  if (!username) {
+  const userId = authenticate(req, res);
+  if (!userId) {
     return;
   }
 
   const { taskId } = req.params;
 
   try {
-    const deleteResult = tasks.deleteTask(username, taskId);
+    const deleteResult = tasks.deleteTask(userId, taskId);
     if (deleteResult) {
       res.status(200).json({ message: "Delete successful" });
       return;
@@ -70,8 +70,8 @@ router.delete("/:taskId", async (req, res) => {
 // We could update other things, such as deadline, priority, etc. To see
 // Also, need to finish this function later
 router.patch("/:taskId", async (req, res) => {
-  const username = authenticate(req, res);
-  if (!username) {
+  const userId = authenticate(req, res);
+  if (!userId) {
     return;
   }
 
@@ -79,7 +79,7 @@ router.patch("/:taskId", async (req, res) => {
   const { newName } = req.body;
 
   try {
-    const updateResult = tasks.updateTask(username, taskId, newName);
+    const updateResult = tasks.updateTask(userId, taskId, newName);
     if (updateResult) {
       return res.status(200).json({ message: "Update successful" });
     }
@@ -91,15 +91,15 @@ router.patch("/:taskId", async (req, res) => {
 
 // Get all notes
 router.get(`/:taskId/notes`, async (req, res) => {
-  const username = authenticate(req, res);
-  if (!username) {
+  const userId = authenticate(req, res);
+  if (!userId) {
     return;
   }
 
   const { taskId } = req.params;
 
   try {
-    const allNotes = await tasks.getNotes({ username, taskId });
+    const allNotes = await tasks.getNotes({ userId, taskId });
     return res.json({ allNotes: allNotes || {} });
   } catch (err) {
     console.log(err);
@@ -131,8 +131,8 @@ router.post(`/:taskId/notes`, async (req, res) => {
 
 // Delete a note
 router.delete(`/:taskId/notes`, async (req, res) => {
-  const username = authenticate(req, res);
-  if (!username) {
+  const userId = authenticate(req, res);
+  if (!userId) {
     return;
   }
 
@@ -140,7 +140,7 @@ router.delete(`/:taskId/notes`, async (req, res) => {
   const { noteId } = req.body;
 
   try {
-    const deleteResult = tasks.deleteNote({ username, taskId, noteId });
+    const deleteResult = tasks.deleteNote({ userId, taskId, noteId });
     if (deleteResult) {
       return res.json({ message: "Delete successful" });
     }

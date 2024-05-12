@@ -11,7 +11,7 @@ async function getTasks(userId) {
       },
       {
         $lookup: {
-          from: "tasks", 
+          from: "tasks",
           localField: "tasks",
           foreignField: "_id",
           as: "taskList",
@@ -63,15 +63,27 @@ async function addTask(userId, newTask) {
 // delete task
 async function deleteTask(userId, taskId) {
   try {
-    const deleteResult = await User.updateOne(
-      { userId },
-      { $unset: { [`tasks.${taskId}`]: "" } }
+    // Delete task from tasks collection
+    const deleteTaskResult = await Task.deleteOne({ _id: taskId });
+
+    // Delete task from tasks array in user
+    const updatedResult = await User.updateOne(
+      { _id: userId },
+      { $pull: { tasks: taskId } }
     );
-
-    console.log("deleted:", deleteResult);
-
-    return deleteResult.modifiedCount > 0;
+ 
+    if (
+      deleteTaskResult.deletedCount === 1 &&
+      updatedResult.modifiedCount == 1
+    ) {
+      console.log("Task deleted successfully");
+      return true;
+    } else {
+      console.log("Task deletion failed");
+      return false;
+    }
   } catch (err) {
+    console.log(err.message);
     throw new Error("Failed to delete task");
   }
 }

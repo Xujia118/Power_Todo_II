@@ -109,8 +109,8 @@ router.get(`/:taskId/notes`, async (req, res) => {
 
 // Add a note
 router.post(`/:taskId/notes`, async (req, res) => {
-  const username = authenticate(req, res);
-  if (!username) {
+  const userId = authenticate(req, res);
+  if (!userId) {
     return;
   }
 
@@ -118,7 +118,7 @@ router.post(`/:taskId/notes`, async (req, res) => {
   const { newNote } = req.body;
 
   try {
-    const addResult = tasks.addNote({ username, taskId, newNote });
+    const addResult = tasks.addNote(taskId, newNote);
     if (addResult) {
       return res.json({ message: "Add successful" });
     }

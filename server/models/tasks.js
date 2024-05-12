@@ -71,7 +71,7 @@ async function deleteTask(userId, taskId) {
       { _id: userId },
       { $pull: { tasks: taskId } }
     );
- 
+
     if (
       deleteTaskResult.deletedCount === 1 &&
       updatedResult.modifiedCount == 1
@@ -113,32 +113,7 @@ async function getNotes({ userId, taskId }) {
   }
 }
 
-//
-async function addNote({ username, taskId, newNote }) {
-  try {
-    const noteId = new ObjectId();
-    const addResult = await User.updateOne(
-      { username, [`tasks.${taskId}`]: { $exists: true } },
-      {
-        $set: {
-          [`tasks.${taskId}.notes.${noteId}`]: {
-            _id: noteId,
-            text: newNote,
-            done: false,
-          },
-        },
-      }
-    );
-    return addResult.modifiedCount > 0;
-  } catch (err) {
-    console.log(err);
-    throw new Error("Failed to add task");
-  }
-}
-
-// 参考以下代码
-// Assume you have a function to add a note to a task
-async function addNoteToTask(taskId, noteData) {
+async function addNote(taskId, newNote) {
   // Find the task by ID
   const task = await Task.findById(taskId);
 
@@ -146,23 +121,34 @@ async function addNoteToTask(taskId, noteData) {
     throw new Error("Task not found");
   }
 
-  // Check if the task already has 10 embedded notes
-  if (task.notes.length >= 10) {
-    // If it has 10 or more notes, add the new note as a reference
-    const newNote = await Note.create(noteData);
-    task.additionalNotes.push(newNote._id); // Add the reference to additionalNotes array
-  } else {
-    // If it has less than 10 notes, add the new note directly to the embedded notes array
-    task.notes.push(noteData);
+  const addNote = {
+    text: newNote,
+    done: false
   }
 
-  // Save the updated task document
-  await task.save();
+  const note = await Note.create(addNote);
+
+  // If task has less or equal to 10 notes, add the new note directly to the embedded notes array
+  if (task.recentNotes.length <= 10) {
+    task.recentNotes.push(note);
+  } else {
+    // If it has 10 or more notes, add the new note as a reference to tasks
+    task.additionalNotes.push(note._id);
+  }
+
+  try {
+    // Save the updated task document
+    await task.save();
+    return true;
+  } catch (err) {
+    console.log(err.message);
+    return false;
+  }
 }
 
-async function deleteNote({ username, taskId, noteId }) {
+async function deleteNote({ userId, taskId, noteId }) {
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ userId });
 
     if (
       !user ||

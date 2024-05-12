@@ -14,9 +14,23 @@ async function getRecentNotes(taskId) {
 // User has to make another call to fetch distant notes
 async function getAdditionalNotes(taskId) {
   try {
-    
-  } catch(err) {
-    console.log(err.message)
+    const query = await Task.aggretate([
+      {
+        $match: { _id: taskId },
+      },
+      {
+        $lookup: {
+          from: "notes",
+          localField: "additionalNotes",
+          foreignField: "_id",
+          as: "noteList",
+        },
+      },
+    ]);
+
+    return query[0].noteList;
+  } catch (err) {
+    console.log(err.message);
     throw err;
   }
 }
@@ -37,7 +51,7 @@ async function addNote(taskId, newNote) {
   const note = await Note.create(addNote);
 
   // If task has less or equal to 10 notes, add the new note directly to the embedded notes array
-  if (task.recentNotes.length <= 10) {
+  if (task.recentNotes.length < 10) {
     task.recentNotes.push(note);
   } else {
     // If it has 10 or more notes, add the new note as a reference to tasks

@@ -90,8 +90,7 @@ router.patch("/:taskId", async (req, res) => {
   }
 });
 
-
-// Get all notes
+// Get recent notes
 router.get(`/:taskId/notes`, async (req, res) => {
   const userId = authenticate(req, res);
   if (!userId) {
@@ -104,9 +103,6 @@ router.get(`/:taskId/notes`, async (req, res) => {
 
   try {
     const recentNotes = await notes.getRecentNotes(taskId);
-    const additionalNotes = await notes.getAdditionalNotes(taskId); // TO decide
-
-    // Let user manually load or give it out?
 
     return res.json({ recentNotes });
   } catch (err) {
@@ -115,8 +111,26 @@ router.get(`/:taskId/notes`, async (req, res) => {
   }
 });
 
+// Get additional notes 
+router.get(`/:taskId/additionl-notes`, async (req, res) => {
+  const userId = authenticate(req, res);
+  if (!userId) {
+    return;
+  }
 
+  const { taskId } = req.params;
 
+  console.log("taskId", taskId);
+
+  try {
+    const additionalNotes = await notes.getAdditionalNotes(taskId); 
+
+    return res.json({ additionalNotes });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 // Add a note
 router.post(`/:taskId/notes`, async (req, res) => {

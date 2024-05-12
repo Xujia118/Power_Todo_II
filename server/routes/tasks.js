@@ -99,8 +99,6 @@ router.get(`/:taskId/notes`, async (req, res) => {
 
   const { taskId } = req.params;
 
-  console.log("taskId", taskId);
-
   try {
     const recentNotes = await notes.getRecentNotes(taskId);
 
@@ -112,7 +110,7 @@ router.get(`/:taskId/notes`, async (req, res) => {
 });
 
 // Get additional notes 
-router.get(`/:taskId/additionl-notes`, async (req, res) => {
+router.get(`/:taskId/additional-notes`, async (req, res) => {
   const userId = authenticate(req, res);
   if (!userId) {
     return;
@@ -120,11 +118,8 @@ router.get(`/:taskId/additionl-notes`, async (req, res) => {
 
   const { taskId } = req.params;
 
-  console.log("taskId", taskId);
-
   try {
     const additionalNotes = await notes.getAdditionalNotes(taskId); 
-
     return res.json({ additionalNotes });
   } catch (err) {
     console.log(err);

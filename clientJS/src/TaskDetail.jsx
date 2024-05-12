@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { fetchAddNote, fetchAdditionalNotes } from "./services";
 
 function TaskDetail({
-  notes,
-  onFetchNotes,
+  recentNotes,
+  additionalNotes,
+  onFetchRecentNotes,
+  onFetchAdditionalNotes,
   onAddNote,
   onDeleteNote,
   onUpdateNote,
@@ -13,25 +16,38 @@ function TaskDetail({
 
   function handleSubmit(e) {
     e.preventDefault();
-    onAddNote(taskId, newNote)
+    onAddNote(taskId, newNote);
     setNewNote("");
   }
 
   function handleDelete(noteId) {
-    onDeleteNote(taskId, noteId)
-    window.location.reload() // While LF a better solution...
+    onDeleteNote(taskId, noteId);
+    window.location.reload(); // While LF a better solution...
   }
 
   function handleEdit(noteId) {
-    onUpdateNote(taskId, noteId, newNote)
+    onUpdateNote(taskId, noteId, newNote);
   }
 
   useEffect(() => {
-    onFetchNotes(taskId);
+    onFetchRecentNotes(taskId);
   }, [taskId]);
 
   return (
     <>
+      <button
+        className=""
+        type="button"
+        onClick={() => {
+          // onFetchAdditionalNotes(taskId);
+          fetchAdditionalNotes(taskId)
+          console.log(taskId)
+          console.log("clicked")
+        }}
+      >
+        GET more notes
+      </button>
+
       <form className="form-add-note" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -44,7 +60,7 @@ function TaskDetail({
       </form>
 
       <ul>
-        {notes.map((note) => (
+        {recentNotes.map((note) => (
           <li key={note._id}>
             <span>{note.text}</span>
             <span>{note.done}</span>

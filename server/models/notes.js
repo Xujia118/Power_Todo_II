@@ -1,4 +1,5 @@
 const { User, Task, Note } = require("../schema");
+const mongoose = require("mongoose");
 
 // Get the latest ten notes embedded in tasks
 async function getRecentNotes(taskId) {
@@ -13,11 +14,10 @@ async function getRecentNotes(taskId) {
 
 // User has to make another call to fetch distant notes
 async function getAdditionalNotes(taskId) {
+
   try {
-    const query = await Task.aggretate([
-      {
-        $match: { _id: taskId },
-      },
+    const query = await Task.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(taskId) } },
       {
         $lookup: {
           from: "notes",

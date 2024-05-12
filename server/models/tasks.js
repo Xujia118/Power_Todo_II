@@ -1,4 +1,4 @@
-const { User, Task, Note } = require("../schema");
+const { User, Task } = require("../schema");
 
 async function getTasks(userId) {
   try {

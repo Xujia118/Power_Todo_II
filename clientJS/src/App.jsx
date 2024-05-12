@@ -10,7 +10,8 @@ import {
   onAddTask,
   onDeleteTask,
   onUpdateTask,
-  onFetchNotes,
+  onFetchRecentNotes,
+  onFetchAdditionalNotes,
   onAddNote,
   onDeleteNote,
   onUpdateNote,
@@ -58,8 +59,10 @@ function App() {
                 path="/:taskId"
                 element={
                   <TaskDetail
-                    notes={state.noteList}
-                    onFetchNotes={onFetchNotes(dispatch)}
+                    recentNotes={state.recentNoteList}
+                    additionalNotes={state.additionalNoteList}
+                    onFetchRecentNotes={onFetchRecentNotes(dispatch)}
+                    onFetchAdditionalNotes={onFetchAdditionalNotes(dispatch)}
                     onAddNote={onAddNote(dispatch)}
                     onDeleteNote={onDeleteNote(dispatch)}
                     onUpdateNote={onUpdateNote(dispatch)}

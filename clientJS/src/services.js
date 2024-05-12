@@ -81,8 +81,13 @@ export function fetchUpdateTask({ taskId, updatedTask }) {
 }
 
 // Notes
-export function fetchNotes(taskId) {
+export function fetchRecentNotes(taskId) {
   const fetched = fetch(`/api/v1/tasks/${taskId}/notes`);
+  return chainPromise(fetched);
+}
+
+export function fetchAdditionalNotes(taskId) {
+  const fetched = fetch(`/api/v1/tasks/${taskId}/additional-notes`);
   return chainPromise(fetched);
 }
 

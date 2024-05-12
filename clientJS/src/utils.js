@@ -8,7 +8,8 @@ import {
   fetchAddTask,
   fetchDeleteTask,
   fetchUpdateTask,
-  fetchNotes,
+  fetchRecentNotes,
+  fetchAdditionalNotes,
   fetchAddNote,
   fetchDeleteNote,
   fetchUpdateNote,
@@ -121,17 +122,35 @@ export function onUpdateTask(dispatch) {
 }
 
 // Notes
-export function onFetchNotes(dispatch) {
+export function onFetchRecentNotes(dispatch) {
   return function (taskId) {
-    fetchNotes(taskId)
+    fetchRecentNotes(taskId)
       .then((data) => {
-        dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.recentNotes });
+        dispatch({ type: ACTIONS.LOAD_RECENT_NOTES, payload: data.recentNotes });
       })
       .catch((err) => {
         console.log(err);
       });
   };
 }
+
+export function onFetchAdditionalNotes(dispatch) {
+  return function (taskId) {
+    fetchAdditionalNotes(taskId)
+      .then((data) => {
+        console.log("data:", data.additionalNotes);
+        dispatch({
+          type: ACTIONS.LOAD_ADDITIONAL_NOTES,
+          payload: data.additionalNotes,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+}
+
+
 
 export function onAddNote(dispatch) {
   return function (taskId, newNote) {

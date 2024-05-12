@@ -42,7 +42,8 @@ export const ACTIONS = {
   DELETE_TASK: "delete task",
   UPDATE_TASK: "update task",
 
-  LOAD_NOTES: "load notes",
+  LOAD_RECENT_NOTES: "load recent notes",
+  LOAD_ADDITIONAL_NOTES: "load additional notes",
   ADD_NOTE: "add note",
   DELETE_NOTE: "delete note",
   UPDATE_NOTE: "update note", 

@@ -6,6 +6,7 @@ const Task = require("../schema");
 const User = require("../schema");
 const users = require("../models/users");
 const tasks = require("../models/tasks");
+const notes = require("../models/notes");
 const authenticate = require("./auth");
 
 // Get all tasks of a user
@@ -89,6 +90,7 @@ router.patch("/:taskId", async (req, res) => {
   }
 });
 
+
 // Get all notes
 router.get(`/:taskId/notes`, async (req, res) => {
   const userId = authenticate(req, res);
@@ -101,8 +103,8 @@ router.get(`/:taskId/notes`, async (req, res) => {
   console.log("taskId", taskId);
 
   try {
-    const recentNotes = await tasks.getRecentNotes(taskId);
-    const additionalNotes = await tasks.getAdditionalNotes(taskId); // TO decide
+    const recentNotes = await notes.getRecentNotes(taskId);
+    const additionalNotes = await notes.getAdditionalNotes(taskId); // TO decide
 
     // Let user manually load or give it out?
 
@@ -127,7 +129,7 @@ router.post(`/:taskId/notes`, async (req, res) => {
   const { newNote } = req.body;
 
   try {
-    const addResult = await tasks.addNote(taskId, newNote);
+    const addResult = await notes.addNote(taskId, newNote);
     if (addResult) {
       return res.json({ message: "Add successful" });
     }
@@ -171,7 +173,7 @@ router.patch(`/:taskId/notes`, async (req, res) => {
   const { noteId, updatedNote } = req.body;
 
   try {
-    const updateResult = tasks.addNote({
+    const updateResult = notes.addNote({
       username,
       taskId,
       noteId,

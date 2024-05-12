@@ -125,7 +125,7 @@ export function onFetchNotes(dispatch) {
   return function (taskId) {
     fetchNotes(taskId)
       .then((data) => {
-        dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.allNotes });
+        dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.recentNotes });
       })
       .catch((err) => {
         console.log(err);
@@ -141,7 +141,7 @@ export function onAddNote(dispatch) {
         return fetchNotes(taskId);
       })
       .then((data) => {
-        dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.allNotes });
+        dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.recentNotes }); // TODO: recent and addtional check
       })
       .catch((err) => {
         console.log(err);

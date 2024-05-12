@@ -98,14 +98,23 @@ router.get(`/:taskId/notes`, async (req, res) => {
 
   const { taskId } = req.params;
 
+  console.log("taskId", taskId);
+
   try {
-    const allNotes = await tasks.getNotes({ userId, taskId });
-    return res.json({ allNotes: allNotes || {} });
+    const recentNotes = await tasks.getRecentNotes(taskId);
+    const additionalNotes = await tasks.getAdditionalNotes(taskId); // TO decide
+
+    // Let user manually load or give it out?
+
+    return res.json({ recentNotes });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
+
+
+
 
 // Add a note
 router.post(`/:taskId/notes`, async (req, res) => {
@@ -118,7 +127,7 @@ router.post(`/:taskId/notes`, async (req, res) => {
   const { newNote } = req.body;
 
   try {
-    const addResult = tasks.addNote(taskId, newNote);
+    const addResult = await tasks.addNote(taskId, newNote);
     if (addResult) {
       return res.json({ message: "Add successful" });
     }

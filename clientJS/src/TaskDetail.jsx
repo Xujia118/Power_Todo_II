@@ -44,7 +44,7 @@ function TaskDetail({
       </form>
 
       <ul>
-        {Object.values(notes).map((note) => (
+        {notes.map((note) => (
           <li key={note._id}>
             <span>{note.text}</span>
             <span>{note.done}</span>

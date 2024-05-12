@@ -26,17 +26,6 @@ async function getTasks(userId) {
   }
 }
 
-async function getOneTask({ userId, taskId }) {
-  try {
-    const userData = await User.findOne({ _id: userId });
-    const task = userData.tasks[taskId];
-    return task;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-}
-
 // add task
 async function addTask(userId, newTask) {
   try {
@@ -102,13 +91,23 @@ async function updateTask({ userId, taskId, newName }) {
 }
 
 // Notes
-async function getNotes({ userId, taskId }) {
+// Get the latest ten notes embedded in tasks
+async function getRecentNotes(taskId) {
   try {
-    const task = await getOneTask({ userId, taskId });
-    const notes = task ? task.notes : null;
-    return notes;
+    const task = await Task.findOne({ _id: taskId });
+    return task.recentNotes;
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
+    throw err;
+  }
+}
+
+// User has to make another call to fetch distant notes
+async function getAdditionalNotes(taskId) {
+  try {
+    const taks
+  } catch(err) {
+    console.log(err.message)
     throw err;
   }
 }
@@ -123,8 +122,8 @@ async function addNote(taskId, newNote) {
 
   const addNote = {
     text: newNote,
-    done: false
-  }
+    done: false,
+  };
 
   const note = await Note.create(addNote);
 
@@ -201,7 +200,8 @@ module.exports = {
   addTask,
   deleteTask,
   updateTask,
-  getNotes,
+  getRecentNotes,
+  getAdditionalNotes,
   addNote,
   deleteNote,
   updateNote,

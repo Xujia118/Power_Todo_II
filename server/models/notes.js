@@ -88,11 +88,7 @@ async function deleteNote(taskId, noteId) {
     // If note is in additionalNotes
     const deletedFromAdditionalNotes = await Task.updateOne(
       { _id: new mongoose.Types.ObjectId(taskId) },
-      {
-        $pull: {
-          additionalNotes: { _id: new mongoose.Types.ObjectId(noteId) },
-        },
-      }
+      { $pull: { additionalNotes: new mongoose.Types.ObjectId(noteId) } }
     );
 
     if (deletedFromAdditionalNotes.modifiedCount) {

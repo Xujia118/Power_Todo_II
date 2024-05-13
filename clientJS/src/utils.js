@@ -155,12 +155,27 @@ export function onFetchAdditionalNotes(dispatch) {
 export function onAddNote(dispatch) {
   return function (taskId, newNote) {
     fetchAddNote(taskId, newNote)
-      .then(() => {
-        dispatch({ type: ACTIONS.ADD_NOTE });
-        return fetchNotes(taskId);
+      .then((data) => {
+        if (data.message === "added to recent notes") {
+          dispatch({ type: ACTIONS.ADD_NOTE });
+          return fetchRecentNotes(taskId);
+        } else {
+          dispatch({ type: ACTIONS.ADD_NOTE });
+          return fetchAdditionalNotes(taskId);
+        }
       })
       .then((data) => {
-        dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.recentNotes }); // TODO: recent and addtional check
+        if (data.recentNotes) {
+          dispatch({
+            type: ACTIONS.LOAD_RECENT_NOTES,
+            payload: data.recentNotes,
+          });
+        } else {
+          dispatch({
+            type: ACTIONS.LOAD_ADDITIONAL_NOTES,
+            payload: data.additionalNotes,
+          });
+        }
       })
       .catch((err) => {
         console.log(err);

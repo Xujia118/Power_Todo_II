@@ -109,7 +109,7 @@ router.get(`/:taskId/notes`, async (req, res) => {
   }
 });
 
-// Get additional notes 
+// Get additional notes
 router.get(`/:taskId/additional-notes`, async (req, res) => {
   const userId = authenticate(req, res);
   if (!userId) {
@@ -119,7 +119,7 @@ router.get(`/:taskId/additional-notes`, async (req, res) => {
   const { taskId } = req.params;
 
   try {
-    const additionalNotes = await notes.getAdditionalNotes(taskId); 
+    const additionalNotes = await notes.getAdditionalNotes(taskId);
     return res.json({ additionalNotes });
   } catch (err) {
     console.log(err);
@@ -139,9 +139,15 @@ router.post(`/:taskId/notes`, async (req, res) => {
 
   try {
     const addResult = await notes.addNote(taskId, newNote);
-    if (addResult) {
-      return res.json({ message: "Add successful" });
+
+    if (addResult === "added to recent notes") {
+      return res.json({ message: "added to recent notes" });
     }
+
+    if (addResult === "added to additional notes") {
+      return res.json({ message: "added to additional notes" });
+    }
+    
     return res.status(404).json({ message: "Add failed" });
   } catch (err) {
     console.log(err);
@@ -160,7 +166,7 @@ router.delete(`/:taskId/notes`, async (req, res) => {
   const { noteId } = req.body;
 
   try {
-    const deleteResult = await notes.deleteNote(taskId, noteId );
+    const deleteResult = await notes.deleteNote(taskId, noteId);
 
     if (deleteResult === "deleted from recent notes") {
       return res.json({ message: "deleted from recent notes" });
@@ -176,8 +182,6 @@ router.delete(`/:taskId/notes`, async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 });
-
-
 
 // Update a note
 router.patch(`/:taskId/notes`, async (req, res) => {

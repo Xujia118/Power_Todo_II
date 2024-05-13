@@ -37,7 +37,6 @@ async function getAdditionalNotes(taskId) {
 async function addNote(taskId, newNote) {
   // Find the task by ID
   const task = await Task.findById(taskId);
-
   if (!task) {
     throw new Error("Task not found");
   }
@@ -49,18 +48,18 @@ async function addNote(taskId, newNote) {
 
   const note = await Note.create(addNote);
 
-  // If task has less or equal to 10 notes, add the new note directly to the embedded notes array
-  if (task.recentNotes.length < 10) {
-    task.recentNotes.push(note);
-  } else {
-    // If it has 10 or more notes, add the new note as a reference to tasks
-    task.additionalNotes.push(note._id);
-  }
-
   try {
-    // Save the updated task document
-    await task.save();
-    return true;
+    // If task has less or equal to 10 notes, add the new note directly to the embedded notes array
+    if (task.recentNotes.length < 10) {
+      task.recentNotes.push(note);
+      await task.save();
+      return "added to recent notes";
+    } else {
+      // If it has 10 or more notes, add the new note as a reference to tasks
+      task.additionalNotes.push(note._id);
+      await task.save();
+      return "added to additional notes";
+    }
   } catch (err) {
     console.log(err.message);
     return false;
@@ -72,7 +71,7 @@ async function deleteNote(taskId, noteId) {
     // Delete note in notes collection
     const deletedFromNotes = await Note.findByIdAndDelete(noteId);
     if (!deletedFromNotes._id) {
-      throw new Error("note delete failed")
+      throw new Error("note delete failed");
     }
 
     // Delete note in tasks collection

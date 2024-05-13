@@ -138,7 +138,6 @@ export function onFetchAdditionalNotes(dispatch) {
   return function (taskId) {
     fetchAdditionalNotes(taskId)
       .then((data) => {
-        console.log("data:", data.additionalNotes);
         dispatch({
           type: ACTIONS.LOAD_ADDITIONAL_NOTES,
           payload: data.additionalNotes,

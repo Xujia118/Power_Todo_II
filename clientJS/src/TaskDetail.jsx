@@ -31,23 +31,11 @@ function TaskDetail({
 
   useEffect(() => {
     onFetchRecentNotes(taskId);
+    onFetchAdditionalNotes(taskId);
   }, [taskId]);
 
   return (
     <>
-      <button
-        className=""
-        type="button"
-        onClick={() => {
-          // onFetchAdditionalNotes(taskId);
-          fetchAdditionalNotes(taskId)
-          console.log(taskId)
-          console.log("clicked")
-        }}
-      >
-        GET more notes
-      </button>
-
       <form className="form-add-note" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -61,6 +49,29 @@ function TaskDetail({
 
       <ul>
         {recentNotes.map((note) => (
+          <li key={note._id}>
+            <span>{note.text}</span>
+            <span>{note.done}</span>
+            <button
+              className="button-edit"
+              type="button"
+              onClick={() => handleEdit(note._id)}
+            >
+              Edit
+            </button>
+            <button
+              className="button-delete"
+              type="button"
+              onClick={() => handleDelete(note._id)}
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+      
+      <ul>
+        {additionalNotes.map((note) => (
           <li key={note._id}>
             <span>{note.text}</span>
             <span>{note.done}</span>

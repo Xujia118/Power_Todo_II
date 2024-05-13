@@ -22,7 +22,6 @@ function TaskDetail({
 
   function handleDelete(noteId) {
     onDeleteNote(taskId, noteId);
-    window.location.reload(); // While LF a better solution...
   }
 
   function handleEdit(noteId) {

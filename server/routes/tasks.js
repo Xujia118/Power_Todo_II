@@ -160,16 +160,24 @@ router.delete(`/:taskId/notes`, async (req, res) => {
   const { noteId } = req.body;
 
   try {
-    const deleteResult = tasks.deleteNote({ userId, taskId, noteId });
-    if (deleteResult) {
-      return res.json({ message: "Delete successful" });
+    const deleteResult = await notes.deleteNote(taskId, noteId );
+
+    if (deleteResult === "deleted from recent notes") {
+      return res.json({ message: "deleted from recent notes" });
     }
+
+    if (deleteResult === "deleted from additional notes") {
+      return res.json({ message: "deleted from additional notes" });
+    }
+
     return res.status(404).json({ message: "Delete failed" });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
+
+
 
 // Update a note
 router.patch(`/:taskId/notes`, async (req, res) => {

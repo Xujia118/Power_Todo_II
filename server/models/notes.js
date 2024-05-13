@@ -14,7 +14,6 @@ async function getRecentNotes(taskId) {
 
 // User has to make another call to fetch distant notes
 async function getAdditionalNotes(taskId) {
-
   try {
     const query = await Task.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(taskId) } },
@@ -68,28 +67,41 @@ async function addNote(taskId, newNote) {
   }
 }
 
-async function deleteNote({ userId, taskId, noteId }) {
+async function deleteNote(taskId, noteId) {
   try {
-    const user = await User.findOne({ userId });
-
-    if (
-      !user ||
-      !user.tasks[taskId] ||
-      !user.tasks[taskId].notes ||
-      !user.tasks[taskId].notes[noteId]
-    ) {
-      return false;
+    // Delete note in notes collection
+    const deletedFromNotes = await Note.findByIdAndDelete(noteId);
+    if (!deletedFromNotes._id) {
+      throw new Error("note delete failed")
     }
 
-    const deleteResult = await User.updateOne(
-      { username, [`tasks.${taskId}`]: { $exists: true } },
-      { $unset: { [`tasks.${taskId}.notes.${noteId}`]: "" } }
+    // Delete note in tasks collection
+    // If note is in recentNotes
+    const deletedFromRecentNotes = await Task.updateOne(
+      { _id: new mongoose.Types.ObjectId(taskId) },
+      { $pull: { recentNotes: { _id: new mongoose.Types.ObjectId(noteId) } } }
     );
 
-    return deleteResult.modifiedCount > 0;
+    if (deletedFromRecentNotes.modifiedCount) {
+      return "deleted from recent notes";
+    }
+
+    // If note is in additionalNotes
+    const deletedFromAdditionalNotes = await Task.updateOne(
+      { _id: new mongoose.Types.ObjectId(taskId) },
+      {
+        $pull: {
+          additionalNotes: { _id: new mongoose.Types.ObjectId(noteId) },
+        },
+      }
+    );
+
+    if (deletedFromAdditionalNotes.modifiedCount) {
+      return "deleted from additional notes";
+    }
   } catch (err) {
-    console.log(err);
-    throw new Error("Failed to delete task");
+    console.log(err.message);
+    return "";
   }
 }
 

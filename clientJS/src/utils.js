@@ -126,7 +126,10 @@ export function onFetchRecentNotes(dispatch) {
   return function (taskId) {
     fetchRecentNotes(taskId)
       .then((data) => {
-        dispatch({ type: ACTIONS.LOAD_RECENT_NOTES, payload: data.recentNotes });
+        dispatch({
+          type: ACTIONS.LOAD_RECENT_NOTES,
+          payload: data.recentNotes,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -149,8 +152,6 @@ export function onFetchAdditionalNotes(dispatch) {
   };
 }
 
-
-
 export function onAddNote(dispatch) {
   return function (taskId, newNote) {
     fetchAddNote(taskId, newNote)
@@ -170,12 +171,28 @@ export function onAddNote(dispatch) {
 export function onDeleteNote(dispatch) {
   return function (taskId, noteId) {
     fetchDeleteNote(taskId, noteId)
-      .then(() => {
-        dispatch({ type: ACTIONS.DELETE_NOTE });
-        return fetchNotes(taskId);
+      .then((data) => {
+        // Conditionally update recent notes or additional notes
+        if (data.message === "deleted from recent notes") {
+          dispatch({ type: ACTIONS.DELETE_NOTE });
+          return fetchRecentNotes(taskId);
+        } else if (data.message === "deleted from additional notes") {
+          dispatch({ type: ACTIONS.DELETE_NOTE });
+          return fetchAdditionalNotes(taskId);
+        }
       })
       .then((data) => {
-        dispatch({ type: ACTIONS.LOAD_NOTES, payload: data.allNotes });
+        if (data.recentNotes) {
+          dispatch({
+            type: ACTIONS.LOAD_RECENT_NOTES,
+            payload: data.recentNotes,
+          });
+        } else {
+          dispatch({
+            type: ACTIONS.LOAD_ADDITIONAL_NOTES,
+            payload: data.additionalNotes,
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
